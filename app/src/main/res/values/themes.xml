@@ -1,0 +1,11 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.TrendingTimes" parent="Theme.AppCompat.DayNight.NoActionBar">
+    </style>
+
+    <style name="Theme.TrendingTimes" parent="Base.Theme.TrendingTimes" />
+
+    <style name="ScreenBackground"><item name="android:background">@color/white</item></style>
+    <style name="RecyclerBackground"><item name="android:background">@color/white</item></style>
+    <style name="TextColor"><item name="android:textColor">@color/black</item> </style>
+</resources>
