@@ -3,6 +3,7 @@ package com.example.trendingtimes.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.media.VolumeShaper.Configuration
 import com.example.trendingtimes.viewmodel.NewsViewModel
 import android.os.Bundle
 import android.widget.Toast
@@ -52,6 +53,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        val currentNightMode = isDarkModeOn()
         adapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
         viewModel = ViewModelProvider(this)[NewsViewModel::class.java]
         binding.navigationViewPager.adapter = adapter
@@ -70,8 +73,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         sharePreferences = getSharedPreferences("MODE", Context.MODE_PRIVATE)
-        nightMode = sharePreferences.getBoolean("nightMode",false)
+        nightMode = sharePreferences.getBoolean("nightMode", currentNightMode)
 
+        if(currentNightMode){
+            binding.switchMode.isChecked = true
+        }
         if(nightMode){
             binding.switchMode.isChecked = true
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
@@ -144,6 +150,12 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    private fun isDarkModeOn(): Boolean {
+        return when (AppCompatDelegate.getDefaultNightMode()) {
+            AppCompatDelegate.MODE_NIGHT_YES -> true
+            else -> false
+        }
+    }
     override fun onResume() {
         super.onResume()
         if(NetworkUtils.isNetworkAvailable(this)){
