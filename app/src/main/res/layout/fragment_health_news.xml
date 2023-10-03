@@ -11,4 +11,13 @@
         android:id="@+id/health_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/progress_bar"
+        android:layout_marginTop="30dp"
+        android:visibility="gone"/>
 </LinearLayout>

@@ -15,6 +15,8 @@ class TechnologyNewsFragment : Fragment(R.layout.fragment_technology_news) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentTechnologyNewsBinding.bind(view)
         val activity = requireActivity() as? MainActivity
+        binding.progressBar.visibility =View.VISIBLE
+
         binding.technologyRv.layoutManager = LinearLayoutManager(requireContext(),
             LinearLayoutManager.VERTICAL,false)
         if(activity != null){

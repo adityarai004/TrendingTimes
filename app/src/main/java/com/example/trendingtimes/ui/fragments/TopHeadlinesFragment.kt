@@ -16,10 +16,13 @@ class TopHeadlinesFragment : Fragment(R.layout.fragment_top_headlines) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentTopHeadlinesBinding.bind(view)
         val activity = requireActivity() as? MainActivity
+
+        binding.progressBar.visibility =View.VISIBLE
         binding.topHeadlinesRv.layoutManager = LinearLayoutManager(requireContext(),
             LinearLayoutManager.VERTICAL,false)
         if(activity != null){
             val adapter = NewsAdapter(requireContext(),activity.topHeadlinesNews,activity.viewModel)
+            binding.progressBar.visibility = View.GONE
             binding.topHeadlinesRv.adapter = adapter
         }
     }

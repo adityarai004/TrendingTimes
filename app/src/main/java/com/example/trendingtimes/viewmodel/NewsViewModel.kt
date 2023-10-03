@@ -36,6 +36,23 @@ private val _healthNewsResponse = MutableLiveData<NewsResponse>()
     val healthNewsResponse =  _healthNewsResponse
 private val _sportsNewsResponse = MutableLiveData<NewsResponse>()
     val sportsNewsResponse =  _sportsNewsResponse
+    private val _queryNewsResponse = MutableLiveData<NewsResponse?>()
+    val queryNewsResponse =  _queryNewsResponse
+
+    fun fetchQueryNews(query: String): MutableLiveData<NewsResponse?> {
+        Log.d("Search","Searched for $query")
+        viewModelScope.launch (Dispatchers.IO){
+            val response = newsRepository.getNewsWithQuery(query)
+            if (response.isSuccessful) {
+                Log.d("TAG","${response.body()?.articles?.get(0)?.url}")
+                _queryNewsResponse.postValue(response.body())
+            }
+            else{
+                Log.d("TAG","Limit reached")
+            }
+        }
+        return queryNewsResponse
+    }
 
     fun fetchBusinessNews():MutableLiveData<NewsResponse>{
         viewModelScope.launch(Dispatchers.IO) {
@@ -159,4 +176,6 @@ private val _sportsNewsResponse = MutableLiveData<NewsResponse>()
         }
         return articleData
     }
+
+//    fun getNewsFromFirebase()
 }

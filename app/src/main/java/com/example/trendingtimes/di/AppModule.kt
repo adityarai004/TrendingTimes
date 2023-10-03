@@ -4,6 +4,8 @@ import com.example.trendingtimes.viewmodel.NewsViewModel
 import com.example.trendingtimes.api.ApiService
 import com.example.trendingtimes.repository.NewsRepository
 import com.example.trendingtimes.util.Constants.Companion.BASE_URL
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,4 +44,18 @@ object AppModule {
     fun provideNewsViewModel(newsRepository: NewsRepository): NewsViewModel {
         return NewsViewModel(newsRepository)
     }
+
+    @Provides
+    @Singleton
+    fun provideFirestore():FirebaseFirestore =FirebaseFirestore.getInstance()
+
+    @Provides
+    @Singleton
+    fun provideFirestoreRepository(impl: FirestoreRepositoryImpl):FirestoreRepository = impl
+    @Provides
+    @Singleton
+    fun provideAuthRepository(impl: AuthRepositoryImpl):AuthRepository = impl
+    @Provides
+    @Singleton
+    fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
 }
