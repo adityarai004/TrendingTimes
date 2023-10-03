@@ -1,23 +1,20 @@
 package com.example.trendingtimes.ui.activity
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import android.media.VolumeShaper.Configuration
 import com.example.trendingtimes.viewmodel.NewsViewModel
 import android.os.Bundle
+import androidx.appcompat.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.trendingtimes.SearchActivity
 import com.example.trendingtimes.util.NetworkUtils
 import com.example.trendingtimes.ui.adapters.ViewPagerAdapter
 import com.example.trendingtimes.data.Article
 import com.example.trendingtimes.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -33,9 +30,6 @@ class MainActivity : AppCompatActivity() {
     var topHeadlinesNews = mutableListOf<Article>()
     var entertainmentNews = mutableListOf<Article>()
     var educationNews = mutableListOf<Article>()
-    var nightMode by Delegates.notNull<Boolean>()
-    lateinit var editor: SharedPreferences.Editor
-    lateinit var sharePreferences:SharedPreferences
     private val tabTitles = arrayOf(
         "Top Headlines",
         "Technology",
@@ -54,7 +48,6 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        val currentNightMode = isDarkModeOn()
         adapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
         viewModel = ViewModelProvider(this)[NewsViewModel::class.java]
         binding.navigationViewPager.adapter = adapter
@@ -72,29 +65,31 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(applicationContext, BookmarkedNewsActivity::class.java)
             startActivity(intent)
         }
-        sharePreferences = getSharedPreferences("MODE", Context.MODE_PRIVATE)
-        nightMode = sharePreferences.getBoolean("nightMode", currentNightMode)
 
-        if(currentNightMode){
-            binding.switchMode.isChecked = true
+        binding.settingsIb.setOnClickListener {
+            startActivity(Intent(applicationContext,SettingsActivity::class.java))
         }
-        if(nightMode){
-            binding.switchMode.isChecked = true
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        }
-        binding.switchMode.setOnClickListener {
-            if(nightMode){
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                editor = sharePreferences.edit()
-                editor.putBoolean("nightMode",false)
+
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                if (!p0.isNullOrEmpty()) {
+                    // Perform the search operation based on the query
+                    val i = Intent(applicationContext, SearchActivity::class.java)
+                    i.putExtra("query",p0)
+                    i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+
+                    startActivity(i)
+                }
+                return true
             }
-            else{
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                editor = sharePreferences.edit()
-                editor.putBoolean("nightMode",true)
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                return true
             }
-            editor.apply()
-        }
+
+        })
+
+//
 
         observeNewsCategories()
     }
@@ -132,7 +127,6 @@ class MainActivity : AppCompatActivity() {
         viewModel.entertainmentNewsResponse.observe(this, Observer {
             entertainmentNews.addAll(it.articles)
         })
-
         viewModel.topHeadlinesNewsResponse.observe(this, Observer {
             topHeadlinesNews.addAll(it.articles)
         })
@@ -150,12 +144,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun isDarkModeOn(): Boolean {
-        return when (AppCompatDelegate.getDefaultNightMode()) {
-            AppCompatDelegate.MODE_NIGHT_YES -> true
-            else -> false
-        }
-    }
+
     override fun onResume() {
         super.onResume()
         if(NetworkUtils.isNetworkAvailable(this)){

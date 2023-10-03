@@ -2,6 +2,7 @@ package com.example.trendingtimes.ui.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +14,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.trendingtimes.R
 import com.example.trendingtimes.data.Article
+import com.example.trendingtimes.data.News
 import com.example.trendingtimes.ui.activity.ReadNewsActivity
 import com.example.trendingtimes.viewmodel.NewsViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -43,8 +47,34 @@ class NewsAdapter(private val context : Context, private val newsList: List<Arti
             Glide.with(context).load(newsItem.urlToImage).into(this.newsImage)
             this.publishTime.text = getTimeDifference(newsItem.publishedAt)
             this.newsDesc.setOnLongClickListener {
-                VM.insertNews(context,newsItem)
-                Toast.makeText(context,"News Saved",Toast.LENGTH_SHORT).show()
+//                VM.insertNews(context,newsItem)
+                val db = FirebaseFirestore.getInstance()
+                val currentUser = FirebaseAuth.getInstance().currentUser
+                val news = newsItem.urlToImage?.let { it1 ->
+                    News(
+                        title = newsItem.title,
+                        publishedAt = newsItem.publishedAt,
+                        url = newsItem.url,
+                        urlImage = it1// or reference to the image
+                    )
+                }
+
+                currentUser?.uid?.let { uid ->
+                    if (news != null) {
+                        db.collection("users")
+                            .document(uid)
+                            .collection("news")
+                            .add(news) // Add the news item to the "news" subcollection
+                            .addOnSuccessListener {
+                                Toast.makeText(context, "News item saved", Toast.LENGTH_SHORT).show()
+                            }
+                            .addOnFailureListener { e ->
+                                // Handle any errors that occur
+                                Log.d("TAG", "Error adding news item", e)
+                                Toast.makeText(context, "Error saving news item", Toast.LENGTH_SHORT).show()
+                            }
+                    }
+                }
                 true
             }
             this.newsDesc.setOnClickListener {
