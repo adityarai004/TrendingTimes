@@ -1,4 +1,4 @@
-package com.example.trendingtimes.di
+package com.example.trendingtimes.repository
 
 import com.example.trendingtimes.Resource
 import com.google.firebase.auth.FirebaseUser

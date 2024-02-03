@@ -15,21 +15,16 @@ import com.example.trendingtimes.data.Article
 import com.example.trendingtimes.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: ViewPagerAdapter
+
+    @Inject
     lateinit var viewModel: NewsViewModel
-    var businessNews = mutableListOf<Article>()
-    var scienceNews = mutableListOf<Article>()
-    var technologyNews = mutableListOf<Article>()
-    var opinionNews = mutableListOf<Article>()
-    var healthNews = mutableListOf<Article>()
-    var sportsNews = mutableListOf<Article>()
-    var topHeadlinesNews = mutableListOf<Article>()
-    var entertainmentNews = mutableListOf<Article>()
-    var educationNews = mutableListOf<Article>()
+    // array for slides/fragments
     private val tabTitles = arrayOf(
         "Top Headlines",
         "Technology",
@@ -48,14 +43,20 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+        binding.searchView.queryHint= "Search for News"
+
+        // Recyclerview
         adapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
-        viewModel = ViewModelProvider(this)[NewsViewModel::class.java]
         binding.navigationViewPager.adapter = adapter
+
         TabLayoutMediator(binding.tabLayout, binding.navigationViewPager) { tab, position ->
             tab.text = tabTitles[position]
         }.attach()
+
+        //Internet Connectivity
         if(NetworkUtils.isNetworkAvailable(this)){
-            fetchAllNews()
+            //Fetch all news
+//            fetchAllNews()
         }
         else{
             Toast.makeText(this,"No Internet Connection Detected",Toast.LENGTH_SHORT).show()
@@ -91,64 +92,65 @@ class MainActivity : AppCompatActivity() {
 
 //
 
-        observeNewsCategories()
+//        observeNewsCategories()
     }
 
-    private fun fetchAllNews() {
-        viewModel.fetchBusinessNews()
-        viewModel.fetchTechnologyNews("technology")
-        viewModel.fetchEducationNews("education")
-        viewModel.fetchOpinionNews("opinion")
-        viewModel.fetchEntertainmentNews("entertainment")
-        viewModel.fetchTopHeadlinesNews("top-headlines")
-        viewModel.fetchSportsNews("sports")
-        viewModel.fetchScienceNews("science")
-        viewModel.fetchHealthNews("health")
-    }
+//    private fun fetchAllNews() {
+//        viewModel.fetchBusinessNews()
+//        viewModel.fetchTechnologyNews("technology")
+//        viewModel.fetchEducationNews("education")
+//        viewModel.fetchOpinionNews("opinion")
+//        viewModel.fetchEntertainmentNews("entertainment")
+//        viewModel.fetchTopHeadlinesNews("top-headlines")
+//        viewModel.fetchSportsNews("sports")
+//        viewModel.fetchScienceNews("science")
+//        viewModel.fetchHealthNews("health")
+//    }
 
 
-    private fun observeNewsCategories() {
-        viewModel.businessNewsResponse.observe(this, Observer {
-            businessNews.addAll(it.articles)
-        })
-
-        viewModel.technologyNewsResponse.observe(this, Observer {
-            technologyNews.addAll(it.articles)
-        })
-
-        viewModel.educationNewsResponse.observe(this, Observer {
-            educationNews.addAll(it.articles)
-        })
-
-        viewModel.opinionNewsResponse.observe(this, Observer {
-            opinionNews.addAll(it.articles)
-        })
-
-        viewModel.entertainmentNewsResponse.observe(this, Observer {
-            entertainmentNews.addAll(it.articles)
-        })
-        viewModel.topHeadlinesNewsResponse.observe(this, Observer {
-            topHeadlinesNews.addAll(it.articles)
-        })
-
-        viewModel.sportsNewsResponse.observe(this, Observer {
-            sportsNews.addAll(it.articles)
-        })
-
-        viewModel.scienceNewsResponse.observe(this, Observer {
-            scienceNews.addAll(it.articles)
-        })
-
-        viewModel.healthNewsResponse.observe(this, Observer {
-            healthNews.addAll(it.articles)
-        })
-    }
+//    private fun observeNewsCategories() {
+//        //start observing changes
+//        viewModel.businessNewsResponse.observe(this, Observer {
+//            businessNews.addAll(it.articles)
+//        })
+//
+//        viewModel.technologyNewsResponse.observe(this, Observer {
+//            technologyNews.addAll(it.articles)
+//        })
+//
+//        viewModel.educationNewsResponse.observe(this, Observer {
+//            educationNews.addAll(it.articles)
+//        })
+//
+//        viewModel.opinionNewsResponse.observe(this, Observer {
+//            opinionNews.addAll(it.articles)
+//        })
+//
+//        viewModel.entertainmentNewsResponse.observe(this, Observer {
+//            entertainmentNews.addAll(it.articles)
+//        })
+//        viewModel.topHeadlinesNewsResponse.observe(this, Observer {
+//            topHeadlinesNews.addAll(it.articles)
+//        })
+//
+//        viewModel.sportsNewsResponse.observe(this, Observer {
+//            sportsNews.addAll(it.articles)
+//        })
+//
+//        viewModel.scienceNewsResponse.observe(this, Observer {
+//            scienceNews.addAll(it.articles)
+//        })
+//
+//        viewModel.healthNewsResponse.observe(this, Observer {
+//            healthNews.addAll(it.articles)
+//        })
+//    }
 
 
     override fun onResume() {
         super.onResume()
         if(NetworkUtils.isNetworkAvailable(this)){
-            fetchAllNews()
+//            fetchAllNews()
         }
         else{
             Toast.makeText(this,"No Internet Connection Detected",Toast.LENGTH_SHORT).show()

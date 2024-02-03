@@ -85,7 +85,6 @@
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 android:id="@+id/name_et"
-                android:drawableEnd="@drawable/done_icon"
                 android:textColor="@color/black"
                 android:textSize="20dp"
                 android:textColorHint="@color/black"
@@ -104,21 +103,42 @@
                 android:textSize="20dp"
                 android:textColor="@color/black"/>
 
-            <EditText
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:id="@+id/email_et"
-                android:drawableEnd="@drawable/done_icon"
-                android:textColor="@color/black"
-                android:textSize="20dp"
+                android:layout_height="match_parent"
+                android:hint="Enter Your E-Mail"
                 android:textColorHint="@color/black"
-                android:textStyle="bold"
-                android:hint="Enter Your Email"/>
+                app:hintEnabled="true"
+                app:hintTextAppearance="@style/MyHintTextAppearance">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textEmailAddress"
+                    android:id="@+id/email_et"
+                    android:ems="15"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="20dp"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <!--            <EditText-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:inputType="textEmailAddress"-->
+<!--                android:id="@+id/email_et"-->
+<!--                android:drawableEnd="@drawable/done_icon"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="20dp"-->
+<!--                android:textColorHint="@color/black"-->
+<!--                android:textStyle="bold"-->
+<!--                android:hint="Enter Your Email"/>-->
 
             <View
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"/>
+                android:layout_height="30dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -127,17 +147,41 @@
                 android:textStyle="bold"
                 android:textSize="20dp"
                 android:textColor="@color/black"/>
-            <EditText
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:id="@+id/password_et"
-                android:textColor="@color/black"
-                android:textSize="20dp"
-                android:textColorHint="@color/black"
-                android:textStyle="bold"
+                android:layout_height="match_parent"
+                app:passwordToggleEnabled="true"
                 android:hint="Enter Your Password"
-                android:drawableEnd="@drawable/password_icon"/>
+                app:hintEnabled="true"
+                android:textColorHint="@color/black"
+                app:hintTextAppearance="@style/MyHintTextAppearance">
+
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textPassword"
+                    android:id="@+id/password_et"
+                    android:ems="15"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="20dp"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+<!--            <EditText-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:inputType="textPassword"-->
+<!--                android:id="@+id/password_et"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="20dp"-->
+<!--                android:textColorHint="@color/black"-->
+<!--                android:textStyle="bold"-->
+<!--                android:hint="Enter Your Password"-->
+<!--                android:drawableEnd="@drawable/password_icon"/>-->
 
             <View
                 android:layout_width="wrap_content"

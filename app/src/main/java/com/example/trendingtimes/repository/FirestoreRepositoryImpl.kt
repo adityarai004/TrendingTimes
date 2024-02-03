@@ -1,4 +1,4 @@
-package com.example.trendingtimes.di
+package com.example.trendingtimes.repository
 
 import androidx.lifecycle.MutableLiveData
 import com.example.trendingtimes.data.News
@@ -8,7 +8,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class FirestoreRepositoryImpl @Inject constructor(private val firebaseFirestore: FirebaseFirestore) : FirestoreRepository  {
+class FirestoreRepositoryImpl @Inject constructor(private val firebaseFirestore: FirebaseFirestore) :
+    FirestoreRepository {
     override fun addNews(news: News, user: FirebaseUser) {
         val usersCollection = firebaseFirestore.collection("users")
         val userDoc = usersCollection.document(user.uid)

@@ -16,13 +16,12 @@ import com.example.trendingtimes.R
 import com.example.trendingtimes.data.Article
 import com.example.trendingtimes.data.News
 import com.example.trendingtimes.ui.activity.ReadNewsActivity
-import com.example.trendingtimes.viewmodel.NewsViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
 
-class NewsAdapter(private val context : Context, private val newsList: List<Article>,private val VM:NewsViewModel):RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
+class NewsAdapter(private val context : Context, private val newsList: List<Article>):RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
 
 
     class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){

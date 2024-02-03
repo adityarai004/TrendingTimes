@@ -15,150 +15,62 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class NewsViewModel @Inject constructor(private val newsRepository: NewsRepository):
-    ViewModel(){
+class NewsViewModel @Inject constructor(private val newsRepository: NewsRepository) :
+    ViewModel() {
 
     private val _businessNewsResponse = MutableLiveData<NewsResponse>()
-    val businessNewsResponse =  _businessNewsResponse
+    val businessNewsResponse = _businessNewsResponse
+
     private val _entertainmentNewsResponse = MutableLiveData<NewsResponse>()
-    val entertainmentNewsResponse =  _entertainmentNewsResponse
-private val _scienceNewsResponse = MutableLiveData<NewsResponse>()
-    val scienceNewsResponse =  _scienceNewsResponse
-private val _educationNewsResponse = MutableLiveData<NewsResponse>()
-    val educationNewsResponse =  _educationNewsResponse
-private val _technologyNewsResponse = MutableLiveData<NewsResponse>()
-    val technologyNewsResponse =  _technologyNewsResponse
-private val _opinionNewsResponse = MutableLiveData<NewsResponse>()
-    val opinionNewsResponse =  _opinionNewsResponse
-private val _topHeadlinesNewsResponse = MutableLiveData<NewsResponse>()
-    val topHeadlinesNewsResponse =  _topHeadlinesNewsResponse
-private val _healthNewsResponse = MutableLiveData<NewsResponse>()
-    val healthNewsResponse =  _healthNewsResponse
-private val _sportsNewsResponse = MutableLiveData<NewsResponse>()
-    val sportsNewsResponse =  _sportsNewsResponse
-    private val _queryNewsResponse = MutableLiveData<NewsResponse?>()
-    val queryNewsResponse =  _queryNewsResponse
+    val entertainmentNewsResponse = _entertainmentNewsResponse
 
-    fun fetchQueryNews(query: String): MutableLiveData<NewsResponse?> {
-        Log.d("Search","Searched for $query")
-        viewModelScope.launch (Dispatchers.IO){
-            val response = newsRepository.getNewsWithQuery(query)
-            if (response.isSuccessful) {
-                Log.d("TAG","${response.body()?.articles?.get(0)?.url}")
-                _queryNewsResponse.postValue(response.body())
-            }
-            else{
-                Log.d("TAG","Limit reached")
-            }
-        }
-        return queryNewsResponse
-    }
+    private val _scienceNewsResponse = MutableLiveData<NewsResponse>()
+    val scienceNewsResponse = _scienceNewsResponse
 
-    fun fetchBusinessNews():MutableLiveData<NewsResponse>{
+    private val _educationNewsResponse = MutableLiveData<NewsResponse>()
+    val educationNewsResponse = _educationNewsResponse
+
+    private val _technologyNewsResponse = MutableLiveData<NewsResponse>()
+    val technologyNewsResponse = _technologyNewsResponse
+
+    private val _opinionNewsResponse = MutableLiveData<NewsResponse>()
+    val opinionNewsResponse = _opinionNewsResponse
+
+    private val _topHeadlinesNewsResponse = MutableLiveData<NewsResponse>()
+    val topHeadlinesNewsResponse = _topHeadlinesNewsResponse
+
+    private val _healthNewsResponse = MutableLiveData<NewsResponse>()
+    val healthNewsResponse = _healthNewsResponse
+
+    private val _sportsNewsResponse = MutableLiveData<NewsResponse>()
+    val sportsNewsResponse = _sportsNewsResponse
+
+    private val _searchNewsResponse = MutableLiveData<NewsResponse>()
+    val searchNewsResponse = _searchNewsResponse
+
+    fun fetchNews(category: String, query: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = newsRepository.getNewsWithQuery("business")
-            if (response.isSuccessful) {
-                _businessNewsResponse.postValue(response.body())
-
+            val response = newsRepository.getNewsWithQuery(query)
+            when (category) {
+                "entertainment" -> _entertainmentNewsResponse.postValue(response.body())
+                "health" -> _healthNewsResponse.postValue(response.body())
+                "science" -> _scienceNewsResponse.postValue(response.body())
+                "sports" -> _sportsNewsResponse.postValue(response.body())
+                "education" -> _educationNewsResponse.postValue(response.body())
+                "top_headlines" -> _topHeadlinesNewsResponse.postValue(response.body())
+                "technology" -> _technologyNewsResponse.postValue(response.body())
+                "opinion" -> _opinionNewsResponse.postValue(response.body())
+                "business" -> _businessNewsResponse.postValue(response.body())
+                "search" -> _searchNewsResponse.postValue(response.body())
             }
-            else{
-                Log.d("TAG","Limit reached")
-            }
-        }
-        return businessNewsResponse
-    }
-    fun fetchEntertainmentNews(q:String):MutableLiveData<NewsResponse>{
-        viewModelScope.launch(Dispatchers.IO){
-            val response = newsRepository.getNewsWithQuery(q)
-            if(response.isSuccessful){
-                _entertainmentNewsResponse.postValue(response.body())
-            }
-            else{
-                Log.d("TAG","Limit reached")
+            if (!response.isSuccessful) {
+                Log.d("TAG", "Limit reached")
             }
         }
-        return entertainmentNewsResponse
-    }
-    fun fetchHealthNews(q:String):MutableLiveData<NewsResponse>{
-        viewModelScope.launch(Dispatchers.IO){
-            val response = newsRepository.getNewsWithQuery(q)
-            if(response.isSuccessful){
-                _healthNewsResponse.postValue(response.body())
-            }
-            else{
-                Log.d("TAG","Limit reached")
-            }
-        }
-        return healthNewsResponse
-    }
-    fun fetchScienceNews(q:String):MutableLiveData<NewsResponse>{
-        viewModelScope.launch(Dispatchers.IO){
-            val response = newsRepository.getNewsWithQuery(q)
-            if(response.isSuccessful){
-                _scienceNewsResponse.postValue(response.body())
-            }
-            else{
-                Log.d("TAG","Limit reached")
-            }        }
-        return scienceNewsResponse
-    }
-    fun fetchSportsNews(q:String):MutableLiveData<NewsResponse>{
-        viewModelScope.launch(Dispatchers.IO){
-            val response = newsRepository.getNewsWithQuery(q)
-            if(response.isSuccessful){
-                _sportsNewsResponse.postValue(response.body())
-            }
-            else{
-                Log.d("TAG","Limit reached")
-            }        }
-        return sportsNewsResponse
-    }
-    fun fetchEducationNews(q:String):MutableLiveData<NewsResponse>{
-        viewModelScope.launch(Dispatchers.IO){
-            val response = newsRepository.getNewsWithQuery(q)
-            if(response.isSuccessful){
-                _educationNewsResponse.postValue(response.body())
-            }
-            else{
-                Log.d("TAG","Limit reached")
-            }        }
-        return educationNewsResponse
-    }
-    fun fetchTopHeadlinesNews(q:String):MutableLiveData<NewsResponse>{
-        viewModelScope.launch(Dispatchers.IO){
-            val response = newsRepository.getNewsWithQuery(q)
-            if(response.isSuccessful){
-                _topHeadlinesNewsResponse.postValue(response.body())
-            }
-            else{
-                Log.d("TAG","Limit reached")
-            }        }
-        return topHeadlinesNewsResponse
-    }
-    fun fetchTechnologyNews(q:String):MutableLiveData<NewsResponse>{
-        viewModelScope.launch(Dispatchers.IO){
-            val response = newsRepository.getNewsWithQuery(q)
-            if(response.isSuccessful){
-                _technologyNewsResponse.postValue(response.body())
-            }
-            else{
-                Log.d("TAG","Limit reached")
-            }        }
-        return technologyNewsResponse
-    }
-    fun fetchOpinionNews(q:String):MutableLiveData<NewsResponse>{
-        viewModelScope.launch(Dispatchers.IO){
-            val response = newsRepository.getNewsWithQuery(q)
-            if(response.isSuccessful){
-                _opinionNewsResponse.postValue(response.body())
-            }
-            else{
-                Log.d("TAG","Limit reached")
-            }        }
-        return opinionNewsResponse
     }
 
 
+    // Local Database
     var articleData: LiveData<List<Article>>? = null
 
     fun insertNews(context: Context, news: Article) {
@@ -171,7 +83,7 @@ private val _sportsNewsResponse = MutableLiveData<NewsResponse>()
 
 
     fun getNewsFromDB(context: Context): LiveData<List<Article>>? {
-        viewModelScope.launch (Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             articleData = NewsRepository.getAllNews(context)
         }
         return articleData

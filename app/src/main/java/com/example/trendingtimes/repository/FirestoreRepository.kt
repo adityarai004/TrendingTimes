@@ -1,4 +1,4 @@
-package com.example.trendingtimes.di
+package com.example.trendingtimes.repository
 
 import androidx.lifecycle.MutableLiveData
 import com.example.trendingtimes.data.News

@@ -29,6 +29,9 @@ class SettingsActivity : AppCompatActivity() {
         sharePreferences = getSharedPreferences("MODE", Context.MODE_PRIVATE)
         nightMode = sharePreferences.getBoolean("nightMode", currentNightMode)
 
+        binding.backButtonIv.setOnClickListener {
+            finish()
+        }
 
         if(currentNightMode){
             binding.lightDarkSwitch.isChecked = true
@@ -50,7 +53,7 @@ class SettingsActivity : AppCompatActivity() {
             }
             editor.apply()
         }
-
+ 
         mAuth = FirebaseAuth.getInstance()
         binding.logOutBtn.setOnClickListener {
             mAuth.signOut()

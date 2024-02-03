@@ -17,9 +17,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/toolbar"
-        android:background="@drawable/toolbar_gradient"
+        android:background="@color/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/Theme.AppCompat.NoActionBar">
+
+
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -27,27 +29,44 @@
                 android:id="@+id/settings_ib"
                 android:src="@drawable/baseline_settings_24"
                 android:thumb="@drawable/thumb"
-                app:track="@drawable/track"/>
+                app:track="@drawable/track"
+                app:tint="@color/white"
+                android:layout_gravity="right"
+                android:backgroundTint="@color/colorPrimary"/>
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Trending Times"
+                android:textColor="@color/white"
+                android:textSize="25dp"
+                android:layout_gravity="center"
+                android:textStyle="italic"/>
+
             <ImageButton
-            android:id="@+id/bookmarks_button"
-            android:layout_marginLeft="250dp"
-            android:padding="10dp"
-            android:background="#ffffff"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baseline_bookmarks_24"/>
+                android:id="@+id/bookmarks_button"
+                android:padding="10dp"
+                android:layout_gravity="end"
+                android:background="#ffffff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_bookmarks_24"
+                android:backgroundTint="@color/colorPrimary"/>
+
+
     </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_view"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:iconifiedByDefault="false"
         android:queryHint="Search for news"
-        app:showAsAction="collapseActionView|ifRoom" />
+        app:showAsAction="collapseActionView|ifRoom"/>
 
-        <com.google.android.material.tabs.TabLayout
+
+    <com.google.android.material.tabs.TabLayout
             app:tabMode="scrollable"
             android:id="@+id/tab_layout"
             android:layout_width="wrap_content"

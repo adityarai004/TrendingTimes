@@ -1,5 +1,6 @@
 package com.example.trendingtimes.ui.adapters
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.util.Log
@@ -79,6 +80,7 @@ class SearchNewsAdapter(private val context : Context, private val newsList: Mut
             }
             this.newsDesc.setOnClickListener {
                 val intent = Intent(context, ReadNewsActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra(ReadNewsActivity.EXTRA_URL, newsItem.url)
                 context.startActivity(intent)
             }
@@ -86,9 +88,9 @@ class SearchNewsAdapter(private val context : Context, private val newsList: Mut
                 val shareIntent = Intent(Intent.ACTION_SEND)
                 shareIntent.type = "text/plain"
                 shareIntent.putExtra(Intent.EXTRA_TEXT, newsItem.url)
-                if (shareIntent.resolveActivity(context.packageManager) != null) {
-                    context.startActivity(Intent.createChooser(shareIntent, "Share Article"))
-                }
+                shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+                context.startActivity(Intent.createChooser(shareIntent, "Share Article"))
             }
         }
     }

@@ -6,21 +6,38 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.trendingtimes.ui.adapters.NewsAdapter
 import com.example.trendingtimes.R
+import com.example.trendingtimes.data.Article
 import com.example.trendingtimes.databinding.FragmentTechnologyNewsBinding
 import com.example.trendingtimes.ui.activity.MainActivity
-
+import com.example.trendingtimes.viewmodel.NewsViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+@AndroidEntryPoint
 class TechnologyNewsFragment : Fragment(R.layout.fragment_technology_news) {
     private lateinit var binding: FragmentTechnologyNewsBinding
+
+    @Inject
+    lateinit var viewModel: NewsViewModel
+    val list = mutableListOf<Article>()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentTechnologyNewsBinding.bind(view)
         val activity = requireActivity() as? MainActivity
         binding.progressBar.visibility =View.VISIBLE
+        viewModel.fetchNews("technology","Technology")
 
         binding.technologyRv.layoutManager = LinearLayoutManager(requireContext(),
             LinearLayoutManager.VERTICAL,false)
-        if(activity != null){
-            binding.technologyRv.adapter = NewsAdapter(requireContext(), activity.technologyNews,activity.viewModel)
+
+        viewModel.technologyNewsResponse.observe(this.requireActivity()){
+            if (it.articles.isNotEmpty()){
+                list.clear()
+                list.addAll(it.articles)
+                val adapter = NewsAdapter(requireContext(),list)
+                binding.progressBar.visibility = View.GONE
+                binding.technologyRv.adapter = adapter
+            }
         }
     }
 }

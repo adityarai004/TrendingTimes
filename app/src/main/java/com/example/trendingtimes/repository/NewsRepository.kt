@@ -17,6 +17,8 @@ import javax.inject.Inject
 class NewsRepository @Inject constructor(private val apiService: ApiService) {
     suspend fun getNewsWithQuery(q: String): Response<NewsResponse> = apiService.getEverythingNews(q)
 
+
+    // Database part : Don't cover
     companion object {
 
         private var articleDatabase: ArticleDatabase? = null

@@ -28,9 +28,6 @@
             android:textColor="@color/white"
             android:textSize="32sp"
             android:textStyle="bold"/>
-
-
-
     </LinearLayout>
 
 
@@ -74,52 +71,53 @@
                 android:textColor="@color/white"
                 android:textSize="20dp"/>
 
-
-
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Email Address"
-                android:alpha="0.7"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                android:textSize="20dp"/>
 
-            <EditText
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:id="@+id/email_et"
-                android:drawableEnd="@drawable/done_icon"
-                android:hint="Enter Your Email"
-                android:textColor="@color/black"
-                android:textSize="20dp"/>
+                android:layout_height="match_parent"
+                android:hint="Enter Your E-Mail"
+                android:textColorHint="@color/black"
+                app:hintTextAppearance="@style/MyHintTextAppearance">
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textEmailAddress"
+                    android:id="@+id/email_et"
+                    android:ems="15"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="20dp"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Password"
-                android:alpha="0.7"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                android:textSize="20dp"/>
 
-            <EditText
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:id="@+id/password_et"
-                android:drawableEnd="@drawable/password_icon"
-                android:textColor="@color/black"
-                android:textSize="20dp"
-                android:hint="Enter Your Passsword"/>
+                android:layout_height="match_parent"
+                app:passwordToggleEnabled="true"
+                android:hint="Enter Your Password"
+                android:textColorHint="@color/black"
+                app:hintTextAppearance="@style/MyHintTextAppearance">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textPassword"
+                    android:id="@+id/password_et"
+                    android:ems="15"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="20dp"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -138,7 +136,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Forgot Password"
+                    android:text="Forgot Password ?"
                     android:textStyle="bold"
                     android:id="@+id/forgot_pass_tv"
                     android:layout_alignParentEnd="true"

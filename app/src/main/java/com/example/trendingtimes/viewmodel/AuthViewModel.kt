@@ -2,7 +2,7 @@ package com.example.trendingtimes.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.example.trendingtimes.Resource
-import com.example.trendingtimes.di.AuthRepository
+import com.example.trendingtimes.repository.AuthRepository
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
