@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.example.trendingtimes.R
 import com.example.trendingtimes.data.Article
 import com.example.trendingtimes.data.News
+import com.example.trendingtimes.databinding.NewsItemBinding
 import com.example.trendingtimes.ui.activity.ReadNewsActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -24,15 +25,16 @@ import java.util.*
 class NewsAdapter(private val context : Context, private val newsList: List<Article>):RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
 
 
-    class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
-        val newsImage: ImageView = itemView.findViewById(R.id.news_image)
-        var newsDesc : TextView= itemView.findViewById(R.id.news_title)
-        val publishTime :TextView = itemView.findViewById(R.id.news_publication_time)
-        val shareBtn:ImageButton = itemView.findViewById(R.id.share_button)
+    class ViewHolder(private val binding: NewsItemBinding):RecyclerView.ViewHolder(binding.root){
+//        val newsImage: ImageView = itemView.findViewById(R.id.news_image)
+//        var newsDesc : TextView= itemView.findViewById(R.id.news_title)
+//        val publishTime :TextView = itemView.findViewById(R.id.news_publication_time)
+//        val shareBtn:ImageButton = itemView.findViewById(R.id.share_button)
+        val mBinding : NewsItemBinding = binding
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(context).inflate(R.layout.news_item,parent,false))
+        return ViewHolder(NewsItemBinding.inflate(LayoutInflater.from(context),parent,false))
     }
 
     override fun getItemCount(): Int {
@@ -41,11 +43,11 @@ class NewsAdapter(private val context : Context, private val newsList: List<Arti
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val newsItem = newsList[position]
-        holder.apply {
-            this.newsDesc.text = newsItem.title
-            Glide.with(context).load(newsItem.urlToImage).into(this.newsImage)
-            this.publishTime.text = getTimeDifference(newsItem.publishedAt)
-            this.newsDesc.setOnLongClickListener {
+        holder.mBinding.item = newsItem;
+        holder.mBinding.apply {
+            Glide.with(context).load(newsItem.urlToImage).into(newsImage)
+            newsPublicationTime.text = getTimeDifference(newsItem.publishedAt)
+            newsTitle.setOnLongClickListener {
 //                VM.insertNews(context,newsItem)
                 val db = FirebaseFirestore.getInstance()
                 val currentUser = FirebaseAuth.getInstance().currentUser
@@ -76,12 +78,12 @@ class NewsAdapter(private val context : Context, private val newsList: List<Arti
                 }
                 true
             }
-            this.newsDesc.setOnClickListener {
+            newsTitle.setOnClickListener {
                 val intent = Intent(context, ReadNewsActivity::class.java)
                 intent.putExtra(ReadNewsActivity.EXTRA_URL, newsItem.url)
                 context.startActivity(intent)
             }
-            this.shareBtn.setOnClickListener {
+            shareButton.setOnClickListener {
                 val shareIntent = Intent(Intent.ACTION_SEND)
                 shareIntent.type = "text/plain"
                 shareIntent.putExtra(Intent.EXTRA_TEXT, newsItem.url)

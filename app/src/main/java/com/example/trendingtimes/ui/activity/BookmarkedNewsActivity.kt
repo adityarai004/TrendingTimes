@@ -41,10 +41,8 @@ class BookmarkedNewsActivity : AppCompatActivity() {
         supportActionBar?.title = "Bookmarks"
 
         val rv = findViewById<RecyclerView>(R.id.bookmarked_recyclerView)
-//        viewModel = ViewModelProvider(this)[NewsViewModel::class.java]
         authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
         binding.bookmarkedRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true)
-//        newsData = mutableListOf()
 
         loadDataFromFirestore()
 
@@ -105,6 +103,9 @@ class BookmarkedNewsActivity : AppCompatActivity() {
 
     private fun loadDataFromFirestore() {
         newsData.clear()
+        if (::adapter.isInitialized){
+            adapter.notifyDataSetChanged()
+        }
         val db = FirebaseFirestore.getInstance()
         val currentUser = FirebaseAuth.getInstance().currentUser
         currentUser?.uid?.let { uid ->
