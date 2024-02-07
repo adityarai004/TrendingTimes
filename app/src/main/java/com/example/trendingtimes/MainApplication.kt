@@ -1,4 +1,4 @@
-package com.example.trendingtimes.application
+package com.example.trendingtimes
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

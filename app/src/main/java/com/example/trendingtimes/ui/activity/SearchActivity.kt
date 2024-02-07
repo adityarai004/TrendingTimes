@@ -1,4 +1,4 @@
-package com.example.trendingtimes
+package com.example.trendingtimes.ui.activity
 
 import android.os.Bundle
 import android.util.Log

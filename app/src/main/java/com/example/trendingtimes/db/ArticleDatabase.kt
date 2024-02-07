@@ -10,7 +10,7 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.trendingtimes.data.Article
 
-@Database(entities = [Article::class], version = 3,exportSchema = true)
+@Database(entities = [Article::class], version = 3,exportSchema = false)
 @TypeConverters(SourceTypeConverter::class)
 abstract class ArticleDatabase: RoomDatabase() {
     abstract fun articleDao(): ArticleDao

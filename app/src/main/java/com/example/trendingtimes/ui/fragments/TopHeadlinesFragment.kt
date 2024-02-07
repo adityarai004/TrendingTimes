@@ -2,6 +2,7 @@ package com.example.trendingtimes.ui.fragments
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.trendingtimes.ui.adapters.NewsAdapter
@@ -9,6 +10,7 @@ import com.example.trendingtimes.R
 import com.example.trendingtimes.data.Article
 import com.example.trendingtimes.databinding.FragmentTopHeadlinesBinding
 import com.example.trendingtimes.ui.activity.MainActivity
+import com.example.trendingtimes.util.NetworkUtils
 import com.example.trendingtimes.viewmodel.NewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -25,10 +27,13 @@ class TopHeadlinesFragment : Fragment(R.layout.fragment_top_headlines) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentTopHeadlinesBinding.bind(view)
-        val activity = requireActivity() as? MainActivity
 
-        viewModel.fetchNews("top_headlines","Top headlines")
-
+        if (NetworkUtils.isNetworkAvailable(requireContext())){
+            viewModel.fetchNews("top_headlines","Top Headlines")
+        }
+        else{
+            Toast.makeText(requireContext(),"Network not available", Toast.LENGTH_LONG).show()
+        }
         binding.progressBar.visibility =View.VISIBLE
         binding.topHeadlinesRv.layoutManager = LinearLayoutManager(requireContext(),
             LinearLayoutManager.VERTICAL,false)
@@ -42,8 +47,5 @@ class TopHeadlinesFragment : Fragment(R.layout.fragment_top_headlines) {
                 binding.topHeadlinesRv.adapter = adapter
             }
         }
-//        if(activity != null){
-//
-//        }
     }
 }

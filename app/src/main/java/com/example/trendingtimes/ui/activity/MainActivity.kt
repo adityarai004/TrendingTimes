@@ -6,12 +6,8 @@ import android.os.Bundle
 import androidx.appcompat.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import com.example.trendingtimes.SearchActivity
 import com.example.trendingtimes.util.NetworkUtils
 import com.example.trendingtimes.ui.adapters.ViewPagerAdapter
-import com.example.trendingtimes.data.Article
 import com.example.trendingtimes.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,12 +40,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
 
         binding.searchView.queryHint= "Search for News"
-
+        binding.searchView.setIconifiedByDefault(false)
         // Recyclerview
         adapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
         binding.navigationViewPager.adapter = adapter
 
         TabLayoutMediator(binding.tabLayout, binding.navigationViewPager) { tab, position ->
+            binding.searchView.clearFocus()
             tab.text = tabTitles[position]
         }.attach()
 
@@ -89,63 +86,7 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
-
-//
-
-//        observeNewsCategories()
     }
-
-//    private fun fetchAllNews() {
-//        viewModel.fetchBusinessNews()
-//        viewModel.fetchTechnologyNews("technology")
-//        viewModel.fetchEducationNews("education")
-//        viewModel.fetchOpinionNews("opinion")
-//        viewModel.fetchEntertainmentNews("entertainment")
-//        viewModel.fetchTopHeadlinesNews("top-headlines")
-//        viewModel.fetchSportsNews("sports")
-//        viewModel.fetchScienceNews("science")
-//        viewModel.fetchHealthNews("health")
-//    }
-
-
-//    private fun observeNewsCategories() {
-//        //start observing changes
-//        viewModel.businessNewsResponse.observe(this, Observer {
-//            businessNews.addAll(it.articles)
-//        })
-//
-//        viewModel.technologyNewsResponse.observe(this, Observer {
-//            technologyNews.addAll(it.articles)
-//        })
-//
-//        viewModel.educationNewsResponse.observe(this, Observer {
-//            educationNews.addAll(it.articles)
-//        })
-//
-//        viewModel.opinionNewsResponse.observe(this, Observer {
-//            opinionNews.addAll(it.articles)
-//        })
-//
-//        viewModel.entertainmentNewsResponse.observe(this, Observer {
-//            entertainmentNews.addAll(it.articles)
-//        })
-//        viewModel.topHeadlinesNewsResponse.observe(this, Observer {
-//            topHeadlinesNews.addAll(it.articles)
-//        })
-//
-//        viewModel.sportsNewsResponse.observe(this, Observer {
-//            sportsNews.addAll(it.articles)
-//        })
-//
-//        viewModel.scienceNewsResponse.observe(this, Observer {
-//            scienceNews.addAll(it.articles)
-//        })
-//
-//        viewModel.healthNewsResponse.observe(this, Observer {
-//            healthNews.addAll(it.articles)
-//        })
-//    }
-
 
     override fun onResume() {
         super.onResume()
