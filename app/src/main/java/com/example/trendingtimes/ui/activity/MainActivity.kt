@@ -3,13 +3,17 @@ package com.example.trendingtimes.ui.activity
 import android.content.Intent
 import com.example.trendingtimes.viewmodel.NewsViewModel
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.example.trendingtimes.util.NetworkUtils
 import com.example.trendingtimes.ui.adapters.ViewPagerAdapter
 import com.example.trendingtimes.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -20,6 +24,7 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var viewModel: NewsViewModel
+
     // array for slides/fragments
     private val tabTitles = arrayOf(
         "Top Headlines",
@@ -39,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        binding.searchView.queryHint= "Search for News"
+        binding.searchView.queryHint = "Search for News"
         binding.searchView.setIconifiedByDefault(false)
         // Recyclerview
         adapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
@@ -51,12 +56,11 @@ class MainActivity : AppCompatActivity() {
         }.attach()
 
         //Internet Connectivity
-        if(NetworkUtils.isNetworkAvailable(this)){
+        if (NetworkUtils.isNetworkAvailable(this)) {
             //Fetch all news
 //            fetchAllNews()
-        }
-        else{
-            Toast.makeText(this,"No Internet Connection Detected",Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, "No Internet Connection Detected", Toast.LENGTH_SHORT).show()
         }
 
         binding.bookmarksButton.setOnClickListener {
@@ -65,15 +69,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.settingsIb.setOnClickListener {
-            startActivity(Intent(applicationContext,SettingsActivity::class.java))
+            startActivity(Intent(applicationContext, SettingsActivity::class.java))
         }
 
-        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
                 if (!p0.isNullOrEmpty()) {
                     // Perform the search operation based on the query
                     val i = Intent(applicationContext, SearchActivity::class.java)
-                    i.putExtra("query",p0)
+                    i.putExtra("query", p0)
                     i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
 
                     startActivity(i)
@@ -86,15 +90,35 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+
+        binding.accountIb.setOnClickListener {
+            startActivity(Intent(this, UpdateProfileActivity::class.java))
+        }
+        val currUser = FirebaseAuth.getInstance().currentUser
+        currUser?.let {
+            FirebaseFirestore.getInstance().collection("users")
+                .document(currUser.uid)
+                .get()
+                .addOnSuccessListener { docSnapshot ->
+                    if (docSnapshot != null) {
+                        val imageUrl = docSnapshot.get("imageUrl")
+                        Glide.with(this).load(
+                            imageUrl
+                        ).into(binding.accountIb)
+                    }
+                }
+                .addOnFailureListener {
+                    Log.d("TAG", "Exception is $it")
+                }
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        if(NetworkUtils.isNetworkAvailable(this)){
+        if (NetworkUtils.isNetworkAvailable(this)) {
 //            fetchAllNews()
-        }
-        else{
-            Toast.makeText(this,"No Internet Connection Detected",Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, "No Internet Connection Detected", Toast.LENGTH_SHORT).show()
         }
 
     }

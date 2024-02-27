@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.activity.UpdateProfileActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <com.google.android.material.appbar.AppBarLayout
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/toolbar"
+                    android:background="#885ADB"
+                    android:minHeight="?attr/actionBarSize"
+                    android:theme="@style/Theme.AppCompat.NoActionBar">
+
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/back_navigation_btn"
+                        android:src="@drawable/baseline_arrow_back_24"
+                        android:layout_gravity="start"
+                        android:contentDescription="@string/back" />
+
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/settings_ib"
+                        android:src="@drawable/baseline_settings_24"
+                        android:thumb="@drawable/thumb"
+                        app:track="@drawable/track"
+                        app:tint="@color/white"
+                        android:layout_gravity="end"
+                        android:backgroundTint="#885ADB" />
+
+                    <TextView
+                        android:id="@+id/toolbar_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Your Profile"
+                        android:textColor="@color/white"
+                        android:textSize="25dp"
+                        android:layout_gravity="center"
+                        android:textStyle="italic" />
+
+                    <ImageButton
+                        android:id="@+id/bookmarks_button"
+                        android:padding="10dp"
+                        android:layout_gravity="end"
+                        android:background="#ffffff"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/baseline_bookmarks_24"
+                        android:backgroundTint="#885ADB" />
+
+
+                </androidx.appcompat.widget.Toolbar>
+            </com.google.android.material.appbar.AppBarLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imgview"
+                    android:layout_width="478dp"
+                    android:layout_height="195dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/top_background"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="80dp"
+                    android:id="@+id/profile_pic_iv"
+                    app:cardPreventCornerOverlap="false"
+                    app:layout_constraintBottom_toBottomOf="@+id/imgview"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imgview"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:layout_width="172dp"
+                        android:layout_height="160dp"
+                        android:src="@drawable/profile"
+                        android:id="@+id/profile_pic"
+                        android:scaleType="centerCrop"/>
+
+                </androidx.cardview.widget.CardView>
+
+
+                <!-- Action name text for the add person button -->
+                <!-- Make sure that you are constraining this Text
+                     to the add Person FAB button -->
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/add_person_fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="48dp"
+                    android:backgroundTint="@color/light_blue"
+                    android:tint="@color/black"
+                    app:fabSize="normal"
+                    app:layout_constraintBottom_toBottomOf="@id/tv1"
+                    app:layout_constraintEnd_toEndOf="@+id/profile_pic_iv"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:srcCompat="@drawable/baseline_camera_alt_24" />
+
+                <TextView
+                    android:id="@+id/tv1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Rai Adii"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="@+id/profile_pic_iv"
+                    app:layout_constraintStart_toStartOf="@+id/profile_pic_iv"
+                    app:layout_constraintTop_toBottomOf="@+id/profile_pic_iv" />
+
+
+                <com.example.trendingtimes.util.CustomUserDetailsView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/tv1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:id="@+id/name_custom_view"/>
+
+                <com.example.trendingtimes.util.CustomUserDetailsView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/name_custom_view"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:id="@+id/email_custom_view"/>
+
+                <com.example.trendingtimes.util.CustomUserDetailsView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/email_custom_view"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:id="@+id/dob_custom_view"/>
+
+                <com.example.trendingtimes.util.CustomUserDetailsView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/dob_custom_view"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:id="@+id/gender_custom_view"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -7,21 +7,36 @@
     android:orientation="vertical"
     tools:context=".ui.activity.MainActivity"
     style="@style/ScreenBackground">
+
     <com.google.android.material.appbar.AppBarLayout
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <androidx.appcompat.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/toolbar"
-        android:background="@color/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/toolbar"
+            android:background="#885ADB"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
 
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="25dp"
+                app:cardPreventCornerOverlap="false"
+                android:padding="5dp">
 
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/account_ib"
+                    android:src="@drawable/baseline_person_24"
+                    android:layout_gravity="start" />
+            </androidx.cardview.widget.CardView>
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -31,8 +46,9 @@
                 android:thumb="@drawable/thumb"
                 app:track="@drawable/track"
                 app:tint="@color/white"
-                android:layout_gravity="right"
-                android:backgroundTint="@color/colorPrimary"/>
+                android:layout_gravity="end"
+                android:backgroundTint="#885ADB" />
+
             <TextView
                 android:id="@+id/toolbar_title"
                 android:layout_width="wrap_content"
@@ -41,7 +57,7 @@
                 android:textColor="@color/white"
                 android:textSize="25dp"
                 android:layout_gravity="center"
-                android:textStyle="italic"/>
+                android:textStyle="italic" />
 
             <ImageButton
                 android:id="@+id/bookmarks_button"
@@ -51,10 +67,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/baseline_bookmarks_24"
-                android:backgroundTint="@color/colorPrimary"/>
+                android:backgroundTint="#885ADB" />
 
 
-    </androidx.appcompat.widget.Toolbar>
+        </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.appcompat.widget.SearchView
@@ -63,18 +79,18 @@
         android:layout_height="wrap_content"
         android:iconifiedByDefault="false"
         android:queryHint="Search for news"
-        app:showAsAction="collapseActionView|ifRoom"/>
+        app:showAsAction="collapseActionView|ifRoom" />
 
 
     <com.google.android.material.tabs.TabLayout
-            app:tabMode="scrollable"
-            android:id="@+id/tab_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        app:tabMode="scrollable"
+        android:id="@+id/tab_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/navigation_view_pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/navigation_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
-    </LinearLayout>
+</LinearLayout>

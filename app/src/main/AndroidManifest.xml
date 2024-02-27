@@ -15,8 +15,11 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/logo2"
         android:supportsRtl="true"
-        android:theme="@style/Theme.TrendingTimes"
+        android:theme="@style/Theme.Material3.DayNight.NoActionBar"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.activity.UpdateProfileActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.activity.SearchActivity"
             android:exported="false" />

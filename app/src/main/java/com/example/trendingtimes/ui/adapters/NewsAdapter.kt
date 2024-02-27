@@ -48,7 +48,6 @@ class NewsAdapter(private val context : Context, private val newsList: List<Arti
             Glide.with(context).load(newsItem.urlToImage).into(newsImage)
             newsPublicationTime.text = getTimeDifference(newsItem.publishedAt)
             newsTitle.setOnLongClickListener {
-//                VM.insertNews(context,newsItem)
                 val db = FirebaseFirestore.getInstance()
                 val currentUser = FirebaseAuth.getInstance().currentUser
                 val news = newsItem.urlToImage?.let { it1 ->
