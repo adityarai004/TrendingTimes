@@ -8,7 +8,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="#060A24"
         tools:context=".ui.activity.SignUpActivity">
 
@@ -140,18 +140,6 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!--            <EditText-->
-                <!--                android:layout_width="match_parent"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                android:inputType="textPassword"-->
-                <!--                android:id="@+id/password_et"-->
-                <!--                android:textColor="@color/black"-->
-                <!--                android:textSize="20dp"-->
-                <!--                android:textColorHint="@color/black"-->
-                <!--                android:textStyle="bold"-->
-                <!--                android:hint="Enter Your Password"-->
-                <!--                android:drawableEnd="@drawable/password_icon"/>-->
-
                 <View
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"/>
@@ -203,6 +191,25 @@
                         android:layout_marginLeft="20dp"/>
 
                 </RadioGroup>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="10dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="37dp"
+                    android:alpha="0.7"
+                    android:text="Date of birth"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    android:layout_gravity="start|center"
+                    android:textStyle="bold" />
+
+                <com.example.trendingtimes.util.CustomUserDetailsView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/dob"/>
 
                 <View
                     android:layout_width="wrap_content"
@@ -270,8 +277,6 @@
                     android:textColor="@color/white"
                     android:textSize="20dp"
                     android:textStyle="bold"/>
-
-
 
             </LinearLayout>
 

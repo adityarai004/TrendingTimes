@@ -5,12 +5,15 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.RadioButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.example.trendingtimes.R
 import com.example.trendingtimes.data.User
 import com.example.trendingtimes.databinding.ActivitySignUpBinding
 import com.example.trendingtimes.viewmodel.AuthViewModel
@@ -63,12 +66,25 @@ class SignUpActivity : AppCompatActivity() {
         binding.pickImgBtn.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
+
+        binding.dob.findViewById<ImageView>(R.id.editIcon).setImageResource(R.drawable.baseline_calendar_month_24)
+
+        binding.dob.setUserDetails(
+            "01/01/2000",
+            "DOB",
+            object : SomethingUpdated {
+                override fun doUpdate(didUpdate: Boolean, newData: String) {
+                    if (didUpdate) {
+                        updateUserInfo(newData)
+                    }
+                }
+            })
         binding.signUpBtn.setOnClickListener {
             val name: String = binding.nameEt.text?.toString() ?: ""
             val email: String = binding.emailEt.text?.toString() ?: ""
             val password: String = binding.passwordEt.text?.toString() ?: ""
             val gender: String = maleOrFemale
-
+            val dob: String = binding.dob.findViewById<TextView>(R.id.userDetailsTextView).text.toString()
 
 
             if (name != "" && email != "" && password != "" && gender != "" && email.endsWith("@gmail.com") && pickedImg != null) {
@@ -90,9 +106,9 @@ class SignUpActivity : AppCompatActivity() {
                                         .addOnSuccessListener { takeSnapshot ->
                                             storageRef.downloadUrl.addOnSuccessListener { uri ->
                                                 imageUrl = uri.toString()
-                                                Log.d("TAG","IMAGE URL : $imageUrl")
+                                                Log.d("TAG", "IMAGE URL : $imageUrl")
 
-                                                val user = User(name, email, gender,imageUrl)
+                                                val user = User(name, email, gender, imageUrl,dob)
                                                 firebaseUser?.uid?.let { uid ->
                                                     // Save user data to Firestore under the user's UID
                                                     db.collection("users")
@@ -107,21 +123,18 @@ class SignUpActivity : AppCompatActivity() {
                                                             finish()
                                                         }
                                                         .addOnFailureListener { e ->
-                                                            binding.progressBar.visibility = View.GONE
+                                                            binding.progressBar.visibility =
+                                                                View.GONE
                                                             // Handle any errors that occur
-                                                            Toast.makeText(
-                                                                applicationContext,
-                                                                "error $e",
-                                                                Toast.LENGTH_SHORT
-                                                            ).show()
+                                                            Toast.makeText(applicationContext, "error $e", Toast.LENGTH_SHORT).show()
 
                                                         }
                                                 }
                                             }
                                         }
                                         .addOnFailureListener {
-                                            Log.d("TAG","Failed Uploading image")
-                                            val user = User(name, email, gender,imageUrl)
+                                            Log.d("TAG", "Failed Uploading image")
+                                            val user = User(name, email, gender, imageUrl,dob)
                                             firebaseUser?.uid?.let { uid ->
                                                 // Save user data to Firestore under the user's UID
                                                 db.collection("users")
@@ -130,28 +143,15 @@ class SignUpActivity : AppCompatActivity() {
                                                     .addOnSuccessListener {
                                                         // Data saved successfully
                                                         // You can perform additional actions here if needed
-                                                        Toast.makeText(
-                                                            applicationContext,
-                                                            "Logged In",
-                                                            Toast.LENGTH_SHORT
-                                                        ).show()
+                                                        Toast.makeText(applicationContext, "Logged In", Toast.LENGTH_SHORT).show()
                                                         binding.progressBar.visibility = View.GONE
-                                                        startActivity(
-                                                            Intent(
-                                                                applicationContext,
-                                                                MainActivity::class.java
-                                                            )
-                                                        )
+                                                        startActivity(Intent(applicationContext, MainActivity::class.java))
                                                         finish()
                                                     }
                                                     .addOnFailureListener { e ->
                                                         binding.progressBar.visibility = View.GONE
                                                         // Handle any errors that occur
-                                                        Toast.makeText(
-                                                            applicationContext,
-                                                            "error $e",
-                                                            Toast.LENGTH_SHORT
-                                                        ).show()
+                                                        Toast.makeText(applicationContext, "error $e", Toast.LENGTH_SHORT).show()
 
                                                     }
                                             }
@@ -168,13 +168,21 @@ class SignUpActivity : AppCompatActivity() {
                     }
                 }
             } else {
-                if(pickedImg == null){
-                    Toast.makeText(applicationContext,"Please choose a profile photo",Toast.LENGTH_LONG).show()
+                if (pickedImg == null) {
+                    Toast.makeText(
+                        applicationContext,
+                        "Please choose a profile photo",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
                 Toast.makeText(applicationContext, "Some inputs may be wrong ", Toast.LENGTH_SHORT)
                     .show()
             }
         }
+    }
+
+    private fun updateUserInfo(newData: String) {
+        binding.dob.updateInformation(newData,"DOB")
     }
 }
 

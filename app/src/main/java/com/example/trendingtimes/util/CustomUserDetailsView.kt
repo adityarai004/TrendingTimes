@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.DialogInterface
 import android.text.SpannableStringBuilder
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.DatePicker
 import android.widget.EditText
@@ -19,6 +18,7 @@ import com.example.trendingtimes.ui.activity.SomethingUpdated
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 
 class CustomUserDetailsView(context: Context, attrs: AttributeSet? = null) : RelativeLayout(context, attrs){
@@ -26,14 +26,17 @@ class CustomUserDetailsView(context: Context, attrs: AttributeSet? = null) : Rel
     init {
         inflate(context, R.layout.user_detail_custom_view, this)
     }
-    var editIcon: ImageView? = null
+    private var editIcon: ImageView? = null
     private var somethingUpdatedListener: SomethingUpdated? = null
+    private var currUser: FirebaseUser? = null
+
     fun setUserDetails(userDetails: String,detailName: String,somethingUpdated: SomethingUpdated) {
         val userDetailsTextView: TextView = findViewById(R.id.userDetailsTextView)
         editIcon = findViewById(R.id.editIcon)
         userDetailsTextView.text = userDetails
         somethingUpdatedListener = somethingUpdated
         initClickListener(detailName, userDetails, somethingUpdatedListener)
+        currUser = FirebaseAuth.getInstance().currentUser
     }
 
     private fun initClickListener(detailName: String, userDetails: String, somethingUpdated: SomethingUpdated?){
@@ -53,27 +56,7 @@ class CustomUserDetailsView(context: Context, attrs: AttributeSet? = null) : Rel
                                 if(et.text.toString() == userDetails){
                                     Toast.makeText(context,"Same information as previous.",Toast.LENGTH_LONG).show()
                                 } else{
-                                    val currUser = FirebaseAuth.getInstance().currentUser
-                                    currUser?.let {
-                                        FirebaseFirestore.getInstance()
-                                            .collection("users")
-                                            .document(currUser.uid)
-                                            .update("name",et.text.toString().trim())
-                                            .addOnCompleteListener {
-                                                if (it.isSuccessful){
-                                                    p0?.dismiss()
-                                                    somethingUpdated?.isUpdated(true)
-                                                    Toast.makeText(context,"Name updated successfully.",Toast.LENGTH_LONG).show()
-                                                } else{
-                                                    p0?.dismiss()
-                                                    Toast.makeText(context,"Something went wrong updating the name.",Toast.LENGTH_LONG).show()
-                                                }
-                                            }
-                                            .addOnFailureListener {
-                                                p0?.dismiss()
-                                                Toast.makeText(context,"Exception : $it",Toast.LENGTH_LONG).show()
-                                            }
-                                    }
+                                    somethingUpdated?.doUpdate(true,et.text.toString().trim())
                                 }
                             }
                         })
@@ -100,7 +83,7 @@ class CustomUserDetailsView(context: Context, attrs: AttributeSet? = null) : Rel
                         .setPositiveButton("Done", object : DialogInterface.OnClickListener {
                             override fun onClick(p0: DialogInterface?, p1: Int) {
                                 val newMonth = calendarView.month
-                                val monthString: String = if (newMonth > 9){
+                                val monthString: String = if (newMonth > 8){
                                     "${newMonth+1}"
                                 } else{
                                     "0${newMonth+1}"
@@ -114,27 +97,7 @@ class CustomUserDetailsView(context: Context, attrs: AttributeSet? = null) : Rel
                                 }
                                 val newDob = "$dayString/$monthString/${calendarView.year}"
 
-                                val currUser = FirebaseAuth.getInstance().currentUser
-                                currUser?.let {
-                                    FirebaseFirestore.getInstance()
-                                        .collection("users")
-                                        .document(currUser.uid)
-                                        .update("dob",newDob)
-                                        .addOnCompleteListener {
-                                            if (it.isSuccessful){
-                                                p0?.dismiss()
-                                                somethingUpdated?.isUpdated(true)
-                                                Toast.makeText(context,"DOB updated successfully.",Toast.LENGTH_LONG).show()
-                                            } else{
-                                                p0?.dismiss()
-                                                Toast.makeText(context,"Something went wrong updating DOB.",Toast.LENGTH_LONG).show()
-                                            }
-                                        }
-                                        .addOnFailureListener {
-                                            p0?.dismiss()
-                                            Toast.makeText(context,"Exception : $it",Toast.LENGTH_LONG).show()
-                                        }
-                                }
+                                somethingUpdated?.doUpdate(true,newDob)
                                 p0?.dismiss()
                             }
                         })
@@ -151,20 +114,30 @@ class CustomUserDetailsView(context: Context, attrs: AttributeSet? = null) : Rel
                     val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_layout_gender, null)
                     val radioGroup = dialogView.findViewById<RadioGroup>(R.id.gender_rg)
 
-                    if (userDetails == "Male"){
-                        radioGroup.check(dialogView.findViewById<RadioButton>(R.id.male_radio_button).id)
-                    } else if(userDetails == "Female"){
-                        radioGroup.check(dialogView.findViewById<RadioButton>(R.id.female_radio_button).id)
-                    } else{
-                        radioGroup.check(dialogView.findViewById<RadioButton>(R.id.other_radio_button).id)
+                    when (userDetails) {
+                        "Male" -> {
+                            radioGroup.check(dialogView.findViewById<RadioButton>(R.id.male_radio_button).id)
+                        }
+                        "Female" -> {
+                            radioGroup.check(dialogView.findViewById<RadioButton>(R.id.female_radio_button).id)
+                        }
+                        else -> {
+                            radioGroup.check(dialogView.findViewById<RadioButton>(R.id.other_radio_button).id)
+                        }
                     }
                     val alertDialog = MaterialAlertDialogBuilder(context)
                         .setTitle("Update your $detailName")
                         .setView(dialogView)
                         .setPositiveButton("Done", object : DialogInterface.OnClickListener {
                             override fun onClick(p0: DialogInterface?, p1: Int) {
-                                val newGender = radioGroup.checkedRadioButtonId
-                                Log.d("UserDetails","newgender = $newGender")
+                                val selected = radioGroup.checkedRadioButtonId
+                                val newGender = when (selected) {
+                                    R.id.male_radio_button -> "Male"
+                                    R.id.female_radio_button -> "Female"
+                                    R.id.other_radio_button -> "Other"
+                                    else -> "Unknown" // Handle other cases as needed
+                                }
+                                somethingUpdated?.doUpdate(true,newGender)
                                 p0?.dismiss()
                             }
                         })
