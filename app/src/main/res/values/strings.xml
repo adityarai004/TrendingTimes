@@ -4,6 +4,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="news_placeholder">This is the news</string>
     <string name="back">back</string>
+    <string name="feedback">Feedback</string>
+    <string name="have_feedback_for_us_submit_here">Have feedback for us? Submit here.</string>
+    <string name="log_out">Log Out</string>
     <color name="purple_200">#FFBB86FC</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="Lavender">#8692f7</color>

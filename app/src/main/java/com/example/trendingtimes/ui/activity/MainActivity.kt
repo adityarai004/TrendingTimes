@@ -1,27 +1,35 @@
 package com.example.trendingtimes.ui.activity
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
-import com.example.trendingtimes.viewmodel.NewsViewModel
+import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import com.bumptech.glide.Glide
-import com.example.trendingtimes.util.NetworkUtils
-import com.example.trendingtimes.ui.adapters.ViewPagerAdapter
 import com.example.trendingtimes.databinding.ActivityMainBinding
+import com.example.trendingtimes.ui.adapters.ViewPagerAdapter
+import com.example.trendingtimes.util.NetworkUtils
+import com.example.trendingtimes.viewmodel.NewsViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: ViewPagerAdapter
-
     @Inject
     lateinit var viewModel: NewsViewModel
 
@@ -38,11 +46,22 @@ class MainActivity : AppCompatActivity() {
         "Opinion"
     )
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+        GlobalScope.launch {
+            try {
+                val token = FirebaseMessaging.getInstance().token.await()
+                // Handle the obtained token (e.g., send it to your server)
+                println("FCM Token: $token")
+            } catch (e: Exception) {
+                // Handle exceptions, if any
+                e.printStackTrace()
+            }
+        }
 
         binding.searchView.queryHint = "Search for News"
         binding.searchView.setIconifiedByDefault(false)
@@ -102,7 +121,7 @@ class MainActivity : AppCompatActivity() {
                 .addOnSuccessListener { docSnapshot ->
                     if (docSnapshot != null) {
                         val imageUrl = docSnapshot.get("imageUrl")
-                        Glide.with(this).load(
+                        Glide.with(this@MainActivity).load(
                             imageUrl
                         ).into(binding.accountIb)
                     }

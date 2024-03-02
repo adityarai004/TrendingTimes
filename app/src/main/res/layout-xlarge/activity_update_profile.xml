@@ -82,7 +82,7 @@
 
                 <ImageView
                     android:id="@+id/imgview"
-                    android:layout_width="match_parent"
+                    android:layout_width="478dp"
                     android:layout_height="195dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/top_background"

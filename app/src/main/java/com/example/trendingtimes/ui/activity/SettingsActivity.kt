@@ -5,7 +5,12 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.trendingtimes.FeedbackActivity
 import com.example.trendingtimes.R
 import com.example.trendingtimes.databinding.ActivitySettingsBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -62,6 +67,20 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+
+        var spannableString = SpannableString(getString(R.string.have_feedback_for_us_submit_here))
+
+        val clickableSpan = object : ClickableSpan() {
+            override fun onClick(p0: View) {
+                startActivity(Intent(this@SettingsActivity,FeedbackActivity::class.java))
+            }
+
+        }
+
+        spannableString.setSpan(clickableSpan,22,33,0)
+        binding.feedbackTv.text = spannableString
+
+        binding.feedbackTv.movementMethod = LinkMovementMethod.getInstance()
     }
 
     private fun isDarkModeOn(): Boolean {
