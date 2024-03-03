@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.trendingtimes.R
 import com.example.trendingtimes.databinding.ActivityLoginBinding
 import com.example.trendingtimes.viewmodel.AuthViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -24,9 +23,15 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        if(FirebaseAuth.getInstance().currentUser != null){
-            startActivity(Intent(applicationContext, MainActivity::class.java))
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            val nextAct = Intent(this, MainActivity::class.java)
+            if (intent != null && intent.hasExtra("news")) {
+                for (key: String in intent.extras?.keySet()!!) {
+                    nextAct.putExtra(key, intent.extras?.getString(key))
+                    Log.d("TAG", "OnCreate $key Data is ${intent.extras?.getString(key)}")
+                }
+            }
+            startActivity(nextAct)
             finish()
         }
 
@@ -34,33 +39,29 @@ class LoginActivity : AppCompatActivity() {
         binding.loginBtn.setOnClickListener {
             binding.progressBar.visibility = View.VISIBLE
             val email = binding.emailEt.text.toString()
-            if(email != "" && binding.passwordEt.text.toString() != ""  && email.endsWith("@gmail.com")){
-                authViewModel.viewModelScope.launch{
-                    if(authViewModel.login(binding.emailEt.text.toString(),binding.passwordEt.text.toString())) {
+            if (email != "" && binding.passwordEt.text.toString() != "" && email.endsWith("@gmail.com")) {
+                authViewModel.viewModelScope.launch {
+                    if (authViewModel.login(binding.emailEt.text.toString(), binding.passwordEt.text.toString())) {
                         binding.progressBar.visibility = View.GONE
                         startActivity(Intent(applicationContext, MainActivity::class.java))
                         finish()
-                    }
-                    else{
-                        Toast.makeText(applicationContext,"UserId or Password is incorrect",Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(applicationContext, "UserId or Password is incorrect", Toast.LENGTH_SHORT).show()
                     }
                 }
-            }
-            else{
-                if(!email.endsWith("@gmail.com")){
-                    Toast.makeText(applicationContext,"Please enter a valid email",Toast.LENGTH_SHORT).show()
-                }
-                else{
-                    Toast.makeText(applicationContext,"Please enter a valid entries",Toast.LENGTH_SHORT).show()
-
+            } else {
+                if (!email.endsWith("@gmail.com")) {
+                    Toast.makeText(applicationContext, "Please enter a valid email", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(applicationContext, "Please enter a valid entries", Toast.LENGTH_SHORT).show()
                 }
             }
         }
         binding.forgotPassTv.setOnClickListener {
-            startActivity(Intent(applicationContext,ForgotPasswordActivity::class.java))
+            startActivity(Intent(applicationContext, ForgotPasswordActivity::class.java))
         }
         binding.signUpTv.setOnClickListener {
-            startActivity(Intent(applicationContext,SignUpActivity::class.java))
+            startActivity(Intent(applicationContext, SignUpActivity::class.java))
         }
     }
 }

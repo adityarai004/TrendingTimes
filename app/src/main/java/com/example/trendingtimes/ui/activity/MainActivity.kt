@@ -1,19 +1,13 @@
 package com.example.trendingtimes.ui.activity
 
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import com.bumptech.glide.Glide
 import com.example.trendingtimes.databinding.ActivityMainBinding
 import com.example.trendingtimes.ui.adapters.ViewPagerAdapter
-import com.example.trendingtimes.util.NetworkUtils
-import com.example.trendingtimes.viewmodel.NewsViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -23,15 +17,12 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: ViewPagerAdapter
-    @Inject
-    lateinit var viewModel: NewsViewModel
 
     // array for slides/fragments
     private val tabTitles = arrayOf(
@@ -50,38 +41,51 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(binding.root)
         GlobalScope.launch {
             try {
                 val token = FirebaseMessaging.getInstance().token.await()
-                // Handle the obtained token (e.g., send it to your server)
                 println("FCM Token: $token")
             } catch (e: Exception) {
-                // Handle exceptions, if any
                 e.printStackTrace()
             }
         }
+        if(intent != null && intent.hasExtra("news")) {
+            val readNews = Intent(this,ReadNewsActivity::class.java)
+            readNews.putExtra("extra_url",intent.getStringExtra("news"))
+            startActivity(readNews)
+        }
+        initialBindings()
 
-        binding.searchView.queryHint = "Search for News"
-        binding.searchView.setIconifiedByDefault(false)
-        // Recyclerview
-        adapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
-        binding.navigationViewPager.adapter = adapter
+
+        val currUser = FirebaseAuth.getInstance().currentUser
+        currUser?.let {
+            FirebaseFirestore.getInstance().collection("users")
+                .document(currUser.uid)
+                .get()
+                .addOnSuccessListener { docSnapshot ->
+                    if (docSnapshot != null) {
+                        val imageUrl = docSnapshot.get("imageUrl")
+                        Glide.with(this@MainActivity).load(
+                            imageUrl
+                        ).into(binding.accountIb)
+                    }
+                }
+                .addOnFailureListener {
+                    Log.d("TAG", "Exception is $it")
+                }
+        }
+    }
+
+    private fun initialBindings(){
 
         TabLayoutMediator(binding.tabLayout, binding.navigationViewPager) { tab, position ->
             binding.searchView.clearFocus()
             tab.text = tabTitles[position]
         }.attach()
 
-        //Internet Connectivity
-        if (NetworkUtils.isNetworkAvailable(this)) {
-            //Fetch all news
-//            fetchAllNews()
-        } else {
-            Toast.makeText(this, "No Internet Connection Detected", Toast.LENGTH_SHORT).show()
-        }
-
+        binding.searchView.queryHint = "Search for News"
+        binding.searchView.setIconifiedByDefault(false)
         binding.bookmarksButton.setOnClickListener {
             val intent = Intent(applicationContext, BookmarkedNewsActivity::class.java)
             startActivity(intent)
@@ -113,32 +117,7 @@ class MainActivity : AppCompatActivity() {
         binding.accountIb.setOnClickListener {
             startActivity(Intent(this, UpdateProfileActivity::class.java))
         }
-        val currUser = FirebaseAuth.getInstance().currentUser
-        currUser?.let {
-            FirebaseFirestore.getInstance().collection("users")
-                .document(currUser.uid)
-                .get()
-                .addOnSuccessListener { docSnapshot ->
-                    if (docSnapshot != null) {
-                        val imageUrl = docSnapshot.get("imageUrl")
-                        Glide.with(this@MainActivity).load(
-                            imageUrl
-                        ).into(binding.accountIb)
-                    }
-                }
-                .addOnFailureListener {
-                    Log.d("TAG", "Exception is $it")
-                }
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (NetworkUtils.isNetworkAvailable(this)) {
-//            fetchAllNews()
-        } else {
-            Toast.makeText(this, "No Internet Connection Detected", Toast.LENGTH_SHORT).show()
-        }
-
+        adapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
+        binding.navigationViewPager.adapter = adapter
     }
 }
