@@ -2,25 +2,25 @@ package com.example.trendingtimes.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.trendingtimes.ui.adapters.NewsAdapter
 import com.example.trendingtimes.R
-import com.example.trendingtimes.data.Article
 import com.example.trendingtimes.data.News
 import com.example.trendingtimes.databinding.ActivityBookmarkedNewsBinding
 import com.example.trendingtimes.ui.adapters.BookmarkNewsAdapter
+import com.example.trendingtimes.util.NetworkUtils
 import com.example.trendingtimes.viewmodel.AuthViewModel
 import com.example.trendingtimes.viewmodel.NewsViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.rpc.context.AttributeContext.Auth
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class BookmarkedNewsActivity : AppCompatActivity() {
@@ -29,6 +29,9 @@ class BookmarkedNewsActivity : AppCompatActivity() {
     private lateinit var authViewModel: AuthViewModel
     private lateinit var binding : ActivityBookmarkedNewsBinding
     private lateinit var adapter: BookmarkNewsAdapter
+
+    @Inject
+    lateinit var viewModel: NewsViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBookmarkedNewsBinding.inflate(layoutInflater)
@@ -44,8 +47,7 @@ class BookmarkedNewsActivity : AppCompatActivity() {
         authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
         binding.bookmarkedRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true)
 
-        loadDataFromFirestore()
-
+        loadData()
 
 
         val mIth = ItemTouchHelper(
@@ -67,28 +69,32 @@ class BookmarkedNewsActivity : AppCompatActivity() {
                         if (direction == ItemTouchHelper.RIGHT) {
                             rightSwipeActivated = true
 
-                            val db = FirebaseFirestore.getInstance()
-                            val currentUser = FirebaseAuth.getInstance().currentUser
-                            val pos = viewHolder.adapterPosition
+                            if (NetworkUtils.isNetworkAvailable(this@BookmarkedNewsActivity)){
+                                val db = FirebaseFirestore.getInstance()
+                                val currentUser = FirebaseAuth.getInstance().currentUser
 
 
-                            currentUser?.uid?.let{uid->
-                                val newsDocumentRef = newsData[viewHolder.adapterPosition].id?.let {
-                                    db.collection("users")
-                                        .document(uid) // The user's document
-                                        .collection("news") // The "news" subcollection
-                                        .document(it)
-                                }
+                                currentUser?.uid?.let{uid->
+                                    val newsItem = newsData[viewHolder.adapterPosition]
+                                    val newsDocumentRef = newsData[viewHolder.adapterPosition].id?.let {
+                                        db.collection("users")
+                                            .document(uid) // The user's document
+                                            .collection("news") // The "news" subcollection
+                                            .document(it)
+                                    }
 
-                                newsDocumentRef?.delete()?.addOnSuccessListener {
-                                    loadDataFromFirestore()
-                                    Toast.makeText(applicationContext, "News item deleted", Toast.LENGTH_SHORT).show()
+                                    newsDocumentRef?.delete()?.addOnSuccessListener {
+                                        GlobalScope.launch {
+                                            viewModel.deleteNews(newsItem)
+                                        }
+                                        loadData()
+                                        Toast.makeText(applicationContext, "News item deleted", Toast.LENGTH_SHORT).show()
+                                    }
                                 }
                             }
-
-
-//                            viewModel.deleteNews(context = this@BookmarkedNewsActivity,newsData[viewHolder.adapterPosition])
-//                            rv.adapter?.notifyItemRemoved(viewHolder.adapterPosition)
+                            else{
+                                Toast.makeText(this@BookmarkedNewsActivity,"You can only remove a news when network is available",Toast.LENGTH_LONG).show()
+                            }
                         }
                     }
 
@@ -101,6 +107,14 @@ class BookmarkedNewsActivity : AppCompatActivity() {
         mIth.attachToRecyclerView(rv)
     }
 
+    private fun loadData(){
+        if(NetworkUtils.isNetworkAvailable(this)){
+            loadDataFromFirestore()
+        }
+        else{
+            loadDataFromLocal()
+        }
+    }
     private fun loadDataFromFirestore() {
         newsData.clear()
         if (::adapter.isInitialized){
@@ -138,7 +152,17 @@ class BookmarkedNewsActivity : AppCompatActivity() {
         }
     }
 
-    private fun onSuccess(newsList: MutableList<News>) {
+    private fun loadDataFromLocal(){
+        newsData.clear()
+        if (::adapter.isInitialized){
+            adapter.notifyDataSetChanged()
+        }
+        viewModel.getNewsFromDB()
+        viewModel.bookmarkedNews.observe(this){ articles ->
+            onSuccess(articles)
+        }
+    }
+    private fun onSuccess(newsList: List<News>) {
         newsData.addAll(newsList)
         adapter = BookmarkNewsAdapter(this, newsData)
         binding.bookmarkedRecyclerView.adapter = adapter

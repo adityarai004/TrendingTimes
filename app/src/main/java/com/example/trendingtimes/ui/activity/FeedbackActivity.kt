@@ -1,4 +1,4 @@
-package com.example.trendingtimes
+package com.example.trendingtimes.ui.activity
 
 //noinspection SuspiciousImport
 import android.R
@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.trendingtimes.MainApplication
 import com.example.trendingtimes.data.Feedback
 import com.example.trendingtimes.databinding.ActivityFeedbackBinding
 

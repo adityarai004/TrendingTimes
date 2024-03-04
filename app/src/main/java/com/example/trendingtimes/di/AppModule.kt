@@ -1,7 +1,10 @@
 package com.example.trendingtimes.di
 
+import android.content.Context
+import androidx.room.Room
 import com.example.trendingtimes.viewmodel.NewsViewModel
 import com.example.trendingtimes.api.ApiService
+import com.example.trendingtimes.db.ArticleDatabase
 import com.example.trendingtimes.repository.AuthRepository
 import com.example.trendingtimes.repository.AuthRepositoryImpl
 import com.example.trendingtimes.repository.FirestoreRepository
@@ -13,6 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -52,8 +56,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideNewsRepository(apiService: ApiService):NewsRepository{
-        return NewsRepository(apiService)
+    fun provideNewsRepository(apiService: ApiService,articleDatabase: ArticleDatabase):NewsRepository{
+        return NewsRepository(apiService,articleDatabase)
     }
 
     @Singleton
@@ -75,4 +79,10 @@ object AppModule {
     @Provides
     @Singleton
     fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
+
+    @Provides
+    @Singleton
+    fun provideDB(@ApplicationContext context: Context): ArticleDatabase {
+        return Room.databaseBuilder(context,ArticleDatabase::class.java,"article").build()
+    }
 }

@@ -22,14 +22,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
 
-class NewsAdapter(private val context : Context, private val newsList: List<Article>):RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
+class NewsAdapter(private val context : Context, private val newsList: List<Article>,private val longPress: LongPress):RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
 
 
     class ViewHolder(private val binding: NewsItemBinding):RecyclerView.ViewHolder(binding.root){
-//        val newsImage: ImageView = itemView.findViewById(R.id.news_image)
-//        var newsDesc : TextView= itemView.findViewById(R.id.news_title)
-//        val publishTime :TextView = itemView.findViewById(R.id.news_publication_time)
-//        val shareBtn:ImageButton = itemView.findViewById(R.id.share_button)
         val mBinding : NewsItemBinding = binding
     }
 
@@ -50,14 +46,13 @@ class NewsAdapter(private val context : Context, private val newsList: List<Arti
             newsTitle.setOnLongClickListener {
                 val db = FirebaseFirestore.getInstance()
                 val currentUser = FirebaseAuth.getInstance().currentUser
-                val news = newsItem.urlToImage?.let { it1 ->
-                    News(
+                val news = News(
                         title = newsItem.title,
                         publishedAt = newsItem.publishedAt,
                         url = newsItem.url,
-                        urlImage = it1// or reference to the image
-                    )
-                }
+                        urlImage = newsItem.urlToImage ?: "")// or reference to the image)
+
+                longPress.didLongPress(news)
 
                 currentUser?.uid?.let { uid ->
                     if (news != null) {
@@ -113,4 +108,8 @@ class NewsAdapter(private val context : Context, private val newsList: List<Arti
             else -> "Just now"
         }
     }
+}
+
+interface LongPress{
+    fun didLongPress(news: News)
 }

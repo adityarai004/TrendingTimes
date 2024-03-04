@@ -3,6 +3,7 @@ package com.example.trendingtimes.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import com.bumptech.glide.Glide
@@ -11,7 +12,11 @@ import com.example.trendingtimes.ui.adapters.ViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.remoteconfig.get
+import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -79,10 +84,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun initialBindings(){
 
-        TabLayoutMediator(binding.tabLayout, binding.navigationViewPager) { tab, position ->
-            binding.searchView.clearFocus()
-            tab.text = tabTitles[position]
-        }.attach()
 
         binding.searchView.queryHint = "Search for News"
         binding.searchView.setIconifiedByDefault(false)
@@ -119,5 +120,9 @@ class MainActivity : AppCompatActivity() {
         }
         adapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
         binding.navigationViewPager.adapter = adapter
+        TabLayoutMediator(binding.tabLayout, binding.navigationViewPager) { tab, position ->
+            binding.searchView.clearFocus()
+            tab.text = tabTitles[position]
+        }.attach()
     }
 }

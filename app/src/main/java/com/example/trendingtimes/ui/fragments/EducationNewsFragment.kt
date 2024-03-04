@@ -8,8 +8,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.trendingtimes.ui.adapters.NewsAdapter
 import com.example.trendingtimes.R
 import com.example.trendingtimes.data.Article
+import com.example.trendingtimes.data.News
 import com.example.trendingtimes.databinding.FragmentEducationNewsBinding
 import com.example.trendingtimes.ui.activity.MainActivity
+import com.example.trendingtimes.ui.adapters.LongPress
 import com.example.trendingtimes.util.NetworkUtils
 import com.example.trendingtimes.viewmodel.NewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,7 +38,11 @@ class EducationNewsFragment : Fragment(R.layout.fragment_education_news) {
             if (it.articles.isNotEmpty()){
                 list.clear()
                 list.addAll(it.articles)
-                val adapter = NewsAdapter(requireContext(),list)
+                val adapter = NewsAdapter(requireContext(),list,object : LongPress {
+                    override fun didLongPress(news: News) {
+                        viewModel.insertNews(news)
+                    }
+                })
                 binding.progressBar.visibility = View.GONE
                 binding.educationRv.adapter = adapter
             }

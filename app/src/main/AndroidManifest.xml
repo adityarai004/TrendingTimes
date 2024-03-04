@@ -18,7 +18,7 @@
         android:theme="@style/Theme.Material3.DayNight.NoActionBar"
         tools:targetApi="31">
         <activity
-            android:name=".FeedbackActivity"
+            android:name=".ui.activity.FeedbackActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activity.UpdateProfileActivity"

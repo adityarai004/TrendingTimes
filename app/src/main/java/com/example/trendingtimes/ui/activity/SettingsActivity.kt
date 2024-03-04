@@ -10,7 +10,6 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.trendingtimes.FeedbackActivity
 import com.example.trendingtimes.R
 import com.example.trendingtimes.databinding.ActivitySettingsBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -72,7 +71,7 @@ class SettingsActivity : AppCompatActivity() {
 
         val clickableSpan = object : ClickableSpan() {
             override fun onClick(p0: View) {
-                startActivity(Intent(this@SettingsActivity,FeedbackActivity::class.java))
+                startActivity(Intent(this@SettingsActivity, FeedbackActivity::class.java))
             }
 
         }

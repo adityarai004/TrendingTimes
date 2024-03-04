@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.trendingtimes.data.Article
+import com.example.trendingtimes.data.News
 import com.example.trendingtimes.data.NewsResponse
 import com.example.trendingtimes.repository.NewsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -48,6 +49,8 @@ class NewsViewModel @Inject constructor(private val newsRepository: NewsReposito
     private val _searchNewsResponse = MutableLiveData<NewsResponse>()
     val searchNewsResponse = _searchNewsResponse
 
+    private val _bookmarkedNews  = MutableLiveData<List<News>>()
+    val bookmarkedNews = _bookmarkedNews
     fun fetchNews(category: String, query: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val response = newsRepository.getNewsWithQuery(query)
@@ -69,25 +72,20 @@ class NewsViewModel @Inject constructor(private val newsRepository: NewsReposito
         }
     }
 
-
-    // Local Database
-    var articleData: LiveData<List<Article>>? = null
-
-    fun insertNews(context: Context, news: Article) {
-        NewsRepository.insertArticle(context, news)
-    }
-
-    fun deleteNews(context: Context, news: Article) {
-        NewsRepository.deleteArticle(context, news)
-    }
-
-
-    fun getNewsFromDB(context: Context): LiveData<List<Article>>? {
+    fun insertNews(news: News) {
         viewModelScope.launch(Dispatchers.IO) {
-            articleData = NewsRepository.getAllNews(context)
+            newsRepository.insertArticle(news)
         }
-        return articleData
     }
 
-//    fun getNewsFromFirebase()
+    suspend fun deleteNews(news: News) {
+        viewModelScope.launch(Dispatchers.IO) {
+            newsRepository.deleteArticle(news)
+        }
+    }
+    fun getNewsFromDB() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _bookmarkedNews.postValue(newsRepository.getAllNews())
+        }
+    }
 }

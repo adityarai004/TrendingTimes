@@ -8,8 +8,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.trendingtimes.ui.adapters.NewsAdapter
 import com.example.trendingtimes.R
 import com.example.trendingtimes.data.Article
+import com.example.trendingtimes.data.News
 import com.example.trendingtimes.databinding.FragmentTechnologyNewsBinding
 import com.example.trendingtimes.ui.activity.MainActivity
+import com.example.trendingtimes.ui.adapters.LongPress
 import com.example.trendingtimes.util.NetworkUtils
 import com.example.trendingtimes.viewmodel.NewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,7 +27,6 @@ class TechnologyNewsFragment : Fragment(R.layout.fragment_technology_news) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentTechnologyNewsBinding.bind(view)
-        val activity = requireActivity() as? MainActivity
         binding.progressBar.visibility =View.VISIBLE
         if (NetworkUtils.isNetworkAvailable(requireContext())){
             viewModel.fetchNews("technology","technology")
@@ -40,7 +41,11 @@ class TechnologyNewsFragment : Fragment(R.layout.fragment_technology_news) {
             if (it.articles.isNotEmpty()){
                 list.clear()
                 list.addAll(it.articles)
-                val adapter = NewsAdapter(requireContext(),list)
+                val adapter = NewsAdapter(requireContext(),list,object : LongPress {
+                    override fun didLongPress(news: News) {
+                        viewModel.insertNews(news)
+                    }
+                })
                 binding.progressBar.visibility = View.GONE
                 binding.technologyRv.adapter = adapter
             }
