@@ -41,7 +41,13 @@ class HealthNewsFragment : Fragment(R.layout.fragment_health_news) {
                 list.addAll(it.articles)
                 val adapter = NewsAdapter(requireContext(),list,object : LongPress {
                     override fun didLongPress(news: News) {
-                        viewModel.insertNews(news)
+                        viewModel.insertNews(news,
+                            onSuccess = {
+                                Toast.makeText(requireContext(),"News bookmarked successfully",Toast.LENGTH_LONG).show()
+                            },
+                            onError = {
+                                Toast.makeText(requireContext(),"Unable to bookmark news at the moment.",Toast.LENGTH_LONG).show()
+                            })
                     }
                 })
                 binding.progressBar.visibility = View.GONE

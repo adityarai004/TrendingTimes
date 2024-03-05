@@ -59,11 +59,10 @@ object AppModule {
     fun provideNewsRepository(apiService: ApiService,articleDatabase: ArticleDatabase):NewsRepository{
         return NewsRepository(apiService,articleDatabase)
     }
-
     @Singleton
     @Provides
-    fun provideNewsViewModel(newsRepository: NewsRepository): NewsViewModel {
-        return NewsViewModel(newsRepository)
+    fun provideNewsViewModel(newsRepository: NewsRepository,firestoreRepository: FirestoreRepository): NewsViewModel {
+        return NewsViewModel(newsRepository,firestoreRepository)
     }
 
     @Provides

@@ -25,7 +25,6 @@ class NewsRepository @Inject constructor(private val apiService: ApiService,
 
     suspend fun deleteArticle(news: News) {
         localDB.articleDao().deleteArticle(news)
-
     }
 
     fun getAllNews(): List<News> {

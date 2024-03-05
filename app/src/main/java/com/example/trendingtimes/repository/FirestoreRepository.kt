@@ -6,7 +6,7 @@ import com.google.firebase.auth.FirebaseUser
 
 interface FirestoreRepository {
 
-    fun addNews(news: News,user: FirebaseUser)
-    fun deleteNews(news: News,user: FirebaseUser)
+    suspend fun addNews(news: News,user: FirebaseUser)
+    suspend fun deleteNews(news: News,user: FirebaseUser)
     fun getNews(user: FirebaseUser): MutableLiveData<List<News>>
 }

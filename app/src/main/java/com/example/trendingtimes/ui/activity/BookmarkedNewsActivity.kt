@@ -18,8 +18,6 @@ import com.example.trendingtimes.viewmodel.NewsViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -50,7 +48,8 @@ class BookmarkedNewsActivity : AppCompatActivity() {
         loadData()
 
 
-        val mIth = ItemTouchHelper(
+        if(NetworkUtils.isNetworkAvailable(this)){
+            val mIth = ItemTouchHelper(
                 object : ItemTouchHelper.SimpleCallback(
                     0,
                     ItemTouchHelper.RIGHT
@@ -70,27 +69,7 @@ class BookmarkedNewsActivity : AppCompatActivity() {
                             rightSwipeActivated = true
 
                             if (NetworkUtils.isNetworkAvailable(this@BookmarkedNewsActivity)){
-                                val db = FirebaseFirestore.getInstance()
-                                val currentUser = FirebaseAuth.getInstance().currentUser
-
-
-                                currentUser?.uid?.let{uid->
-                                    val newsItem = newsData[viewHolder.adapterPosition]
-                                    val newsDocumentRef = newsData[viewHolder.adapterPosition].id?.let {
-                                        db.collection("users")
-                                            .document(uid) // The user's document
-                                            .collection("news") // The "news" subcollection
-                                            .document(it)
-                                    }
-
-                                    newsDocumentRef?.delete()?.addOnSuccessListener {
-                                        GlobalScope.launch {
-                                            viewModel.deleteNews(newsItem)
-                                        }
-                                        loadData()
-                                        Toast.makeText(applicationContext, "News item deleted", Toast.LENGTH_SHORT).show()
-                                    }
-                                }
+                                viewModel.deleteNews(newsData[viewHolder.adapterPosition])
                             }
                             else{
                                 Toast.makeText(this@BookmarkedNewsActivity,"You can only remove a news when network is available",Toast.LENGTH_LONG).show()
@@ -104,7 +83,9 @@ class BookmarkedNewsActivity : AppCompatActivity() {
                     }
                 }
             )
-        mIth.attachToRecyclerView(rv)
+            mIth.attachToRecyclerView(rv)
+        }
+
     }
 
     private fun loadData(){
@@ -163,6 +144,7 @@ class BookmarkedNewsActivity : AppCompatActivity() {
         }
     }
     private fun onSuccess(newsList: List<News>) {
+        newsData.clear()
         newsData.addAll(newsList)
         adapter = BookmarkNewsAdapter(this, newsData)
         binding.bookmarkedRecyclerView.adapter = adapter

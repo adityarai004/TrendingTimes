@@ -1,22 +1,22 @@
 package com.example.trendingtimes.viewmodel
 
-import android.content.Context
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.trendingtimes.data.Article
 import com.example.trendingtimes.data.News
 import com.example.trendingtimes.data.NewsResponse
+import com.example.trendingtimes.repository.FirestoreRepository
 import com.example.trendingtimes.repository.NewsRepository
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class NewsViewModel @Inject constructor(private val newsRepository: NewsRepository) :
+class NewsViewModel @Inject constructor(private val newsRepository: NewsRepository,private val firestoreRepository: FirestoreRepository) :
     ViewModel() {
 
     private val _businessNewsResponse = MutableLiveData<NewsResponse>()
@@ -71,18 +71,35 @@ class NewsViewModel @Inject constructor(private val newsRepository: NewsReposito
             }
         }
     }
-
-    fun insertNews(news: News) {
+    fun deleteNews(news: News) {
         viewModelScope.launch(Dispatchers.IO) {
-            newsRepository.insertArticle(news)
+            try{
+                firestoreRepository.deleteNews(news,FirebaseAuth.getInstance().currentUser!!)
+
+                newsRepository.deleteArticle(news)
+            } catch (e: Exception){
+                Log.e("ERROR","Something went wrong $e")
+            }
+        }
+    }
+    fun insertNews(news: News, onSuccess: () -> Unit,onError: (exception : String) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                firestoreRepository.addNews(news,FirebaseAuth.getInstance().currentUser!!)
+
+                newsRepository.insertArticle(news)
+                withContext(Dispatchers.Main){
+                    onSuccess()
+                }
+            } catch (e: Exception){
+                Log.e("ERROR","Something went wrong $e")
+                withContext(Dispatchers.Main){
+                    e.message?.let { onError(it) }
+                }
+            }
         }
     }
 
-    suspend fun deleteNews(news: News) {
-        viewModelScope.launch(Dispatchers.IO) {
-            newsRepository.deleteArticle(news)
-        }
-    }
     fun getNewsFromDB() {
         viewModelScope.launch(Dispatchers.IO) {
             _bookmarkedNews.postValue(newsRepository.getAllNews())

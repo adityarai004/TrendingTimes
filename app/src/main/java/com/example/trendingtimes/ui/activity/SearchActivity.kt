@@ -47,7 +47,13 @@ class SearchActivity : AppCompatActivity() {
                 list.addAll(it.articles)
                 val adapter = NewsAdapter(this,list,object : LongPress {
                     override fun didLongPress(news: News) {
-                        viewModel.insertNews(news)
+                        viewModel.insertNews(news,
+                            onSuccess = {
+                                Toast.makeText(this@SearchActivity,"News bookmarked successfully",Toast.LENGTH_LONG).show()
+                            },
+                            onError = {
+                                Toast.makeText(this@SearchActivity,"Unable to bookmark news at the moment.",Toast.LENGTH_LONG).show()
+                            })
                     }
                 })
                 binding.progressBar.visibility = View.GONE

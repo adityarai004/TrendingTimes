@@ -53,23 +53,6 @@ class NewsAdapter(private val context : Context, private val newsList: List<Arti
                         urlImage = newsItem.urlToImage ?: "")// or reference to the image)
 
                 longPress.didLongPress(news)
-
-                currentUser?.uid?.let { uid ->
-                    if (news != null) {
-                        db.collection("users")
-                            .document(uid)
-                            .collection("news")
-                            .add(news) // Add the news item to the "news" subcollection
-                            .addOnSuccessListener {
-                                Toast.makeText(context, "News item saved", Toast.LENGTH_SHORT).show()
-                            }
-                            .addOnFailureListener { e ->
-                                // Handle any errors that occur
-                                Log.d("TAG", "Error adding news item", e)
-                                Toast.makeText(context, "Error saving news item", Toast.LENGTH_SHORT).show()
-                            }
-                    }
-                }
                 true
             }
             newsTitle.setOnClickListener {
