@@ -28,10 +28,11 @@ class BusinessNewsFragment : Fragment(R.layout.fragment_business_news) {
         binding = FragmentBusinessNewsBinding.bind(view)
 
         if (NetworkUtils.isNetworkAvailable(requireContext())){
+            binding.noInternetLottie.visibility = View.GONE
             viewModel.fetchNews("business","business")
         }
         else{
-            Toast.makeText(requireContext(),"Network not available",Toast.LENGTH_LONG).show()
+            binding.progressBar.visibility = View.GONE
         }
 
 

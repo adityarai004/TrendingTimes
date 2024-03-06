@@ -71,14 +71,21 @@ class NewsViewModel @Inject constructor(private val newsRepository: NewsReposito
             }
         }
     }
-    fun deleteNews(news: News) {
+    fun deleteNews(news: News, success: (Boolean) -> Unit,onError: (exception: String) -> Unit,) {
         viewModelScope.launch(Dispatchers.IO) {
             try{
                 firestoreRepository.deleteNews(news,FirebaseAuth.getInstance().currentUser!!)
 
                 newsRepository.deleteArticle(news)
+
+                withContext(Dispatchers.Main){
+                    success(true)
+                }
             } catch (e: Exception){
                 Log.e("ERROR","Something went wrong $e")
+                withContext(Dispatchers.Main){
+                    e.message?.let { onError(it) }
+                }
             }
         }
     }
@@ -103,6 +110,17 @@ class NewsViewModel @Inject constructor(private val newsRepository: NewsReposito
     fun getNewsFromDB() {
         viewModelScope.launch(Dispatchers.IO) {
             _bookmarkedNews.postValue(newsRepository.getAllNews())
+        }
+    }
+
+    fun getNewsFromRemote(){
+        viewModelScope.launch(Dispatchers.IO) {
+            firestoreRepository.observeNewsList(onSuccess = {
+                _bookmarkedNews.postValue(it)
+            },
+                onError = {
+
+                })
         }
     }
 }

@@ -16,6 +16,7 @@ import com.example.trendingtimes.util.NetworkUtils
 import com.example.trendingtimes.viewmodel.NewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
 @AndroidEntryPoint
 class TechnologyNewsFragment : Fragment(R.layout.fragment_technology_news) {
     private lateinit var binding: FragmentTechnologyNewsBinding
@@ -27,28 +28,38 @@ class TechnologyNewsFragment : Fragment(R.layout.fragment_technology_news) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentTechnologyNewsBinding.bind(view)
-        binding.progressBar.visibility =View.VISIBLE
-        if (NetworkUtils.isNetworkAvailable(requireContext())){
-            viewModel.fetchNews("technology","technology")
+        binding.progressBar.visibility = View.VISIBLE
+        if (NetworkUtils.isNetworkAvailable(requireContext())) {
+            binding.noInternetLottie.visibility = View.GONE
+            viewModel.fetchNews("technology", "technology")
+        } else {
+            binding.progressBar.visibility = View.GONE
         }
-        else{
-            Toast.makeText(requireContext(),"Network not available", Toast.LENGTH_LONG).show()
-        }
-        binding.technologyRv.layoutManager = LinearLayoutManager(requireContext(),
-            LinearLayoutManager.VERTICAL,false)
+        binding.technologyRv.layoutManager = LinearLayoutManager(
+            requireContext(),
+            LinearLayoutManager.VERTICAL, false
+        )
 
-        viewModel.technologyNewsResponse.observe(this.requireActivity()){
-            if (it.articles.isNotEmpty()){
+        viewModel.technologyNewsResponse.observe(this.requireActivity()) {
+            if (it.articles.isNotEmpty()) {
                 list.clear()
                 list.addAll(it.articles)
-                val adapter = NewsAdapter(requireContext(),list,object : LongPress {
+                val adapter = NewsAdapter(requireContext(), list, object : LongPress {
                     override fun didLongPress(news: News) {
                         viewModel.insertNews(news,
                             onSuccess = {
-                                Toast.makeText(requireContext(),"News bookmarked successfully",Toast.LENGTH_LONG).show()
+                                Toast.makeText(
+                                    requireContext(),
+                                    "News bookmarked successfully",
+                                    Toast.LENGTH_LONG
+                                ).show()
                             },
                             onError = {
-                                Toast.makeText(requireContext(),"Unable to bookmark news at the moment.",Toast.LENGTH_LONG).show()
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Unable to bookmark news at the moment.",
+                                    Toast.LENGTH_LONG
+                                ).show()
                             })
                     }
                 })

@@ -27,11 +27,11 @@ class EducationNewsFragment : Fragment(R.layout.fragment_education_news) {
         binding = FragmentEducationNewsBinding.bind(view)
 
         if (NetworkUtils.isNetworkAvailable(requireContext())){
+            binding.noInternetLottie.visibility = View.GONE
             viewModel.fetchNews("education","education")
         }
         else{
-            Toast.makeText(requireContext(),"Network not available", Toast.LENGTH_LONG).show()
-        }
+            binding.progressBar.visibility = View.GONE        }
         binding.educationRv.layoutManager = LinearLayoutManager(requireContext(),
             LinearLayoutManager.VERTICAL,false)
         viewModel.educationNewsResponse.observe(this.requireActivity()){

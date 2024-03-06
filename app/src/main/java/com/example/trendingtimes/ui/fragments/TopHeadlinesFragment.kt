@@ -10,7 +10,6 @@ import com.example.trendingtimes.R
 import com.example.trendingtimes.data.Article
 import com.example.trendingtimes.data.News
 import com.example.trendingtimes.databinding.FragmentTopHeadlinesBinding
-import com.example.trendingtimes.ui.activity.MainActivity
 import com.example.trendingtimes.ui.adapters.LongPress
 import com.example.trendingtimes.util.NetworkUtils
 import com.example.trendingtimes.viewmodel.NewsViewModel
@@ -30,28 +29,38 @@ class TopHeadlinesFragment : Fragment(R.layout.fragment_top_headlines) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentTopHeadlinesBinding.bind(view)
 
-        if (NetworkUtils.isNetworkAvailable(requireContext())){
-            viewModel.fetchNews("top_headlines","Top Headlines")
+        if (NetworkUtils.isNetworkAvailable(requireContext())) {
+            binding.noInternetLottie.visibility = View.GONE
+            viewModel.fetchNews("top_headlines", "Top Headlines")
+        } else {
+            binding.progressBar.visibility = View.GONE
         }
-        else{
-            Toast.makeText(requireContext(),"Network not available", Toast.LENGTH_LONG).show()
-        }
-        binding.progressBar.visibility =View.VISIBLE
-        binding.topHeadlinesRv.layoutManager = LinearLayoutManager(requireContext(),
-            LinearLayoutManager.VERTICAL,false)
+        binding.progressBar.visibility = View.VISIBLE
+        binding.topHeadlinesRv.layoutManager = LinearLayoutManager(
+            requireContext(),
+            LinearLayoutManager.VERTICAL, false
+        )
 
-        viewModel.topHeadlinesNewsResponse.observe(this.requireActivity()){
-            if (it.articles.isNotEmpty()){
+        viewModel.topHeadlinesNewsResponse.observe(this.requireActivity()) {
+            if (it.articles.isNotEmpty()) {
                 list.clear()
                 list.addAll(it.articles)
-                val adapter = NewsAdapter(requireContext(),list,object : LongPress {
+                val adapter = NewsAdapter(requireContext(), list, object : LongPress {
                     override fun didLongPress(news: News) {
                         viewModel.insertNews(news,
                             onSuccess = {
-                                Toast.makeText(requireContext(),"News bookmarked successfully",Toast.LENGTH_LONG).show()
+                                Toast.makeText(
+                                    requireContext(),
+                                    "News bookmarked successfully",
+                                    Toast.LENGTH_LONG
+                                ).show()
                             },
                             onError = {
-                                Toast.makeText(requireContext(),"Unable to bookmark news at the moment.",Toast.LENGTH_LONG).show()
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Unable to bookmark news at the moment.",
+                                    Toast.LENGTH_LONG
+                                ).show()
                             })
                     }
                 })

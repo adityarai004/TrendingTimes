@@ -29,26 +29,36 @@ class OpinionNewsFragment : Fragment(R.layout.fragment_opinion_news) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentOpinionNewsBinding.bind(view)
 
-        if (NetworkUtils.isNetworkAvailable(requireContext())){
-            viewModel.fetchNews("opinion","Opinion")
+        if (NetworkUtils.isNetworkAvailable(requireContext())) {
+            binding.noInternetLottie.visibility = View.GONE
+            viewModel.fetchNews("opinion", "Opinion")
+        } else {
+            binding.progressBar.visibility = View.GONE
         }
-        else{
-            Toast.makeText(requireContext(),"Network not available", Toast.LENGTH_LONG).show()
-        }
-        binding.opinionRv.layoutManager = LinearLayoutManager(requireContext(),
-            LinearLayoutManager.VERTICAL,false)
-        viewModel.opinionNewsResponse.observe(this.requireActivity()){
-            if (it.articles.isNotEmpty()){
+        binding.opinionRv.layoutManager = LinearLayoutManager(
+            requireContext(),
+            LinearLayoutManager.VERTICAL, false
+        )
+        viewModel.opinionNewsResponse.observe(this.requireActivity()) {
+            if (it.articles.isNotEmpty()) {
                 list.clear()
                 list.addAll(it.articles)
-                val adapter = NewsAdapter(requireContext(),list,object : LongPress {
+                val adapter = NewsAdapter(requireContext(), list, object : LongPress {
                     override fun didLongPress(news: News) {
                         viewModel.insertNews(news,
                             onSuccess = {
-                                Toast.makeText(requireContext(),"News bookmarked successfully",Toast.LENGTH_LONG).show()
+                                Toast.makeText(
+                                    requireContext(),
+                                    "News bookmarked successfully",
+                                    Toast.LENGTH_LONG
+                                ).show()
                             },
                             onError = {
-                                Toast.makeText(requireContext(),"Unable to bookmark news at the moment.",Toast.LENGTH_LONG).show()
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Unable to bookmark news at the moment.",
+                                    Toast.LENGTH_LONG
+                                ).show()
                             })
                     }
                 })

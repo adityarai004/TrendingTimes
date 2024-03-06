@@ -24,7 +24,6 @@ class ForgotPasswordActivity : AppCompatActivity() {
                 val email = binding.emailForForgotEt.text.toString()
                 binding.progressBar.visibility = View.VISIBLE
 
-// Check if the email address exists in Firebase Authentication
                 FirebaseAuth.getInstance().fetchSignInMethodsForEmail(email)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {

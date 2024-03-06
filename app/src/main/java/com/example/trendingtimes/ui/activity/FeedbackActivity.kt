@@ -46,7 +46,6 @@ class FeedbackActivity : AppCompatActivity() {
 
         binding.categorySpinner.adapter = categoryAdapter
 
-
         binding.submitBtn.setOnClickListener {
             binding.progressLayout.visibility = View.VISIBLE
         }

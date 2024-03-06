@@ -2,6 +2,7 @@ package com.example.trendingtimes.repository
 
 import androidx.lifecycle.MutableLiveData
 import com.example.trendingtimes.data.News
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
@@ -25,7 +26,39 @@ class FirestoreRepositoryImpl @Inject constructor(private val firebaseFirestore:
         news.id?.let { userDoc.collection("news").document(it) }?.delete()?.await()
     }
 
-    override fun getNews(user: FirebaseUser): MutableLiveData<List<News>> {
-        TODO("Not yet implemented")
+    override fun observeNewsList(
+        onSuccess: (List<News>) -> Unit,
+        onError: (Exception) -> Unit
+    ) {
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        currentUser?.uid?.let { uid ->
+            firebaseFirestore.collection("users")
+                .document(uid)
+                .collection("news")
+                .addSnapshotListener { querySnapshot, error ->
+                    if (error != null) {
+                        onError(error)
+                        return@addSnapshotListener
+                    }
+
+                    val newsList = mutableListOf<News>()
+                    querySnapshot?.let { snapshot ->
+                        for (document in snapshot.documents) {
+                            val newsId = document.id
+                            val newsData = document.data
+
+                            val news = News(
+                                id = newsId,
+                                title = newsData?.get("title") as String,
+                                publishedAt = newsData["publishedAt"] as String,
+                                urlImage = newsData["urlImage"] as String,
+                                url = newsData["url"] as String
+                            )
+                            newsList.add(news)
+                        }
+                        onSuccess(newsList)
+                    }
+                }
+        }
     }
 }

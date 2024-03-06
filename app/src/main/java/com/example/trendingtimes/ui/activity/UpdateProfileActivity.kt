@@ -32,7 +32,7 @@ class UpdateProfileActivity : AppCompatActivity() {
         binding = ActivityUpdateProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.backNavigationBtn?.setOnClickListener {
+        binding.backNavigationBtn.setOnClickListener {
             finish()
         }
 
@@ -46,13 +46,13 @@ class UpdateProfileActivity : AppCompatActivity() {
                         val imageUrl = docSnapshot.get("imageUrl")
                         Glide.with(this).load(
                             imageUrl
-                        ).into(binding.profilePic!!)
+                        ).into(binding.profilePic)
                         val name = docSnapshot.get("name")
                         val email = docSnapshot.get("email")
                         val dob = docSnapshot.get("dob")
                         val gender = docSnapshot.get("gender")
-                        binding.tv1!!.text = name.toString()
-                        binding.nameCustomView?.setUserDetails(
+                        binding.tv1.text = name.toString()
+                        binding.nameCustomView.setUserDetails(
                             name.toString(),
                             "Name",
                             object : SomethingUpdated {
@@ -62,7 +62,7 @@ class UpdateProfileActivity : AppCompatActivity() {
                                     }
                                 }
                             })
-                        binding.emailCustomView?.setUserDetails(
+                        binding.emailCustomView.setUserDetails(
                             email.toString(),
                             "Email",
                             object : SomethingUpdated {
@@ -72,7 +72,7 @@ class UpdateProfileActivity : AppCompatActivity() {
                                     }
                                 }
                             })
-                        binding.dobCustomView?.setUserDetails(
+                        binding.dobCustomView.setUserDetails(
                             dob.toString(),
                             "DOB",
                             object : SomethingUpdated {
@@ -82,7 +82,7 @@ class UpdateProfileActivity : AppCompatActivity() {
                                     }
                                 }
                             })
-                        binding.genderCustomView?.setUserDetails(
+                        binding.genderCustomView.setUserDetails(
                             gender.toString(),
                             "Gender",
                             object : SomethingUpdated {
@@ -119,20 +119,20 @@ class UpdateProfileActivity : AppCompatActivity() {
                                         val imageUrl = docSnapshot.get("imageUrl")
                                         Glide.with(this).load(
                                             imageUrl
-                                        ).into(binding.profilePic!!)
+                                        ).into(binding.profilePic)
                                         val name = docSnapshot.get("name")
                                         val email = docSnapshot.get("email")
                                         val dob = docSnapshot.get("dob")
                                         val gender = docSnapshot.get("gender")
-                                        binding.tv1!!.text = name.toString()
-                                        binding.nameCustomView?.updateInformation(name.toString(),"Name")
-                                        binding.emailCustomView?.updateInformation(email.toString(),"Email")
-                                        binding.dobCustomView?.updateInformation(dob.toString(),"DOB")
-                                        binding.genderCustomView?.updateInformation(gender.toString(),"Gender")
+                                        binding.tv1.text = name.toString()
+                                        binding.nameCustomView.updateInformation(name.toString(),"Name")
+                                        binding.emailCustomView.updateInformation(email.toString(),"Email")
+                                        binding.dobCustomView.updateInformation(dob.toString(),"DOB")
+                                        binding.genderCustomView.updateInformation(gender.toString(),"Gender")
                                     }
                                 }
-                                .addOnFailureListener {
-                                    Log.d("TAG", "Exception is $it")
+                                .addOnFailureListener { exception ->
+                                    Log.d("TAG", "Exception is $exception")
                                 }
                         }
                         Toast.makeText(this,"$fieldToUpdate updated successfully.", Toast.LENGTH_LONG).show()

@@ -15,5 +15,4 @@ interface ApiService {
          @Query("page") pageNumber: Int = 1,
          @Query("sortBy") sortBy:String = "publishedAt"
      ): Response<NewsResponse>
-
 }
