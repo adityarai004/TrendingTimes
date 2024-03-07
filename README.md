@@ -11,21 +11,20 @@ Trending Times is a news app that allows users to stay updated with the latest n
 - Implementing dark mode and light mode for a customizable user experience.
 - Handling internet connectivity to prevent app crashes in case of no internet.
 
-## Screenshots
-![news ss10](https://github.com/adityarai004/TrendingTimes/assets/86659578/71f8ef23-cdee-4433-a941-a566680ff0c6)
-![image](https://github.com/adityarai004/TrendingTimes/assets/86659578/0add7c2f-b115-4e1f-9cb3-76307273ce24)
-![image](https://github.com/adityarai004/TrendingTimes/assets/86659578/fac1b12e-2cbc-4162-aefb-a69c11f4c32a)
-![image](https://github.com/adityarai004/TrendingTimes/assets/86659578/152f4f7b-f08c-4a6e-b6b7-b2616152277b)
-![image](https://github.com/adityarai004/TrendingTimes/assets/86659578/303040d5-80de-4600-afde-20172a07d4e8)
-![news ss](https://github.com/adityarai004/TrendingTimes/assets/86659578/ebb41571-194c-4790-ab47-9de1a8ae2389)
-![news ss2](https://github.com/adityarai004/TrendingTimes/assets/86659578/3a183f72-c7f8-4f47-a8a8-bb7cad19d2ab)
-
+## Screen Recordings
 <img src="https://github.com/adityarai004/TrendingTimes/assets/86659578/e5f15536-4bb1-4a02-a8f2-709df388cafe" width="250"/>
 <img src="https://github.com/adityarai004/TrendingTimes/assets/86659578/675b55c1-6a33-4578-9779-badc58c4f9c4" width="250"/>
-
-
 <img src="https://github.com/adityarai004/TrendingTimes/assets/86659578/23f75ee7-0f97-456a-93db-0be7ac112aa7" width="250"/>
 <img src="https://github.com/adityarai004/TrendingTimes/assets/86659578/61356c01-07c3-447e-bb5b-7838812b3d82" width="250"/>
+
+## Screenshots
+<img src="https://github.com/adityarai004/TrendingTimes/assets/86659578/71f8ef23-cdee-4433-a941-a566680ff0c6" width="250"/>
+<img src="https://github.com/adityarai004/TrendingTimes/assets/86659578/0add7c2f-b115-4e1f-9cb3-76307273ce24" width="250"/>
+<img src="https://github.com/adityarai004/TrendingTimes/assets/86659578/fac1b12e-2cbc-4162-aefb-a69c11f4c32a" width="250"/>
+<img src="https://github.com/adityarai004/TrendingTimes/assets/86659578/152f4f7b-f08c-4a6e-b6b7-b2616152277b" width="250"/>
+<img src="https://github.com/adityarai004/TrendingTimes/assets/86659578/303040d5-80de-4600-afde-20172a07d4e8" width="250"/>
+<img src="https://github.com/adityarai004/TrendingTimes/assets/86659578/ebb41571-194c-4790-ab47-9de1a8ae2389" width="250"/>
+<img src="https://github.com/adityarai004/TrendingTimes/assets/86659578/3a183f72-c7f8-4f47-a8a8-bb7cad19d2ab" width="250"/>
 
 ## Libraries Used
 
