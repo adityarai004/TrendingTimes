@@ -69,6 +69,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/dark_mode_tv" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/change_pass_btn"
+        android:text="@string/change_password"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/Lavender"
+        app:layout_constraintTop_toBottomOf="@id/dark_mode_tv"
+        app:layout_constraintStart_toStartOf="@id/dark_mode_tv"
+        android:paddingStart="10dp"
+        android:paddingEnd="5dp"/>
+
 
     <Button
         android:id="@+id/log_out_btn"
@@ -77,9 +90,9 @@
         android:background="@drawable/btn_signup"
         android:text="@string/log_out"
         android:layout_margin="20dp"
-        app:layout_constraintEnd_toEndOf="@+id/dark_mode_tv"
-        app:layout_constraintStart_toStartOf="@+id/dark_mode_tv"
-        app:layout_constraintTop_toBottomOf="@id/dark_mode_tv" />
+        app:layout_constraintEnd_toEndOf="@+id/change_pass_btn"
+        app:layout_constraintStart_toStartOf="@+id/change_pass_btn"
+        app:layout_constraintTop_toBottomOf="@id/change_pass_btn" />
 
     <TextView
         android:layout_width="match_parent"

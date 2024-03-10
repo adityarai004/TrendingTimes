@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.trendingtimes.R
 import com.example.trendingtimes.databinding.ActivityForgotPasswordBinding
 import com.google.firebase.auth.FirebaseAuth
 

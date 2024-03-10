@@ -5,7 +5,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <application
         android:name=".MainApplication"
         android:allowBackup="true"
@@ -17,6 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Material3.DayNight.NoActionBar"
         tools:targetApi="31">
+        <activity
+            android:name=".ChangePasswordActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.activity.FeedbackActivity"
             android:exported="false" />
@@ -53,6 +57,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

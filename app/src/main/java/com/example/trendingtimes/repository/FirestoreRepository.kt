@@ -1,6 +1,5 @@
 package com.example.trendingtimes.repository
 
-import androidx.lifecycle.MutableLiveData
 import com.example.trendingtimes.data.News
 import com.google.firebase.auth.FirebaseUser
 

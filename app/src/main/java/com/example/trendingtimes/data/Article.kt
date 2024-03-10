@@ -7,6 +7,7 @@ import java.util.TimeZone
 
 
 data class Article(
+    val _id: String,
     val author: String? = null,
     val content: String,
     val description: String,
