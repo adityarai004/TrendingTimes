@@ -1,17 +1,16 @@
 package com.example.trendingtimes.api
 
 import com.example.trendingtimes.data.NewsResponse
-import com.example.trendingtimes.util.Constants.Companion.API_KEY
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
-     @GET("everything")
+     @GET("news/{category}")
      suspend fun getEverythingNews(
-         @Query("q") q:String,
-         @Query("apiKey") apiKey:String = API_KEY,
+         @Path("category") category:String,
          @Query("page") pageNumber: Int = 1,
-         @Query("sortBy") sortBy:String = "publishedAt"
+         @Query("limit") limit:Int = 20
      ): Response<NewsResponse>
 }

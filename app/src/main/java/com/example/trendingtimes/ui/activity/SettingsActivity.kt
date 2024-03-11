@@ -34,6 +34,9 @@ class SettingsActivity : AppCompatActivity() {
         sharePreferences = getSharedPreferences("MODE", Context.MODE_PRIVATE)
         nightMode = sharePreferences.getBoolean("nightMode", currentNightMode)
 
+        if(FirebaseAuth.getInstance().currentUser?.isAnonymous == true){
+            binding.changePassBtn.visibility = View.GONE
+        }
         binding.backButtonIv.setOnClickListener {
             finish()
         }

@@ -72,7 +72,12 @@
 
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
-
+    <LinearLayout
+        android:id="@+id/root_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:focusableInTouchMode="true">
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_view"
         android:layout_width="match_parent"
@@ -81,7 +86,7 @@
         android:queryHint="Search for news"
         app:showAsAction="collapseActionView|ifRoom" />
 
-
+    </LinearLayout>
     <com.google.android.material.tabs.TabLayout
         app:tabMode="scrollable"
         android:id="@+id/tab_layout"

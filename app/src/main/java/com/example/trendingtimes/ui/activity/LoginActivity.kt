@@ -1,11 +1,11 @@
 package com.example.trendingtimes.ui.activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.trendingtimes.databinding.ActivityLoginBinding
@@ -14,15 +14,18 @@ import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     lateinit var authViewModel: AuthViewModel
 
+    private lateinit var mAuth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        mAuth = FirebaseAuth.getInstance()
         if (FirebaseAuth.getInstance().currentUser != null) {
             val nextAct = Intent(this, MainActivity::class.java)
             if (intent != null && intent.hasExtra("news")) {
@@ -33,6 +36,35 @@ class LoginActivity : AppCompatActivity() {
             }
             startActivity(nextAct)
             finish()
+        }
+
+        binding.continueAsAGuest.setOnClickListener {
+            mAuth.signInAnonymously()
+                .addOnCompleteListener(
+                    this
+                ) { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d("TAG", "signInAnonymously:success")
+                        val user = mAuth.currentUser
+                        val nextAct = Intent(this, MainActivity::class.java)
+                        if (intent != null && intent.hasExtra("news")) {
+                            for (key: String in intent.extras?.keySet()!!) {
+                                nextAct.putExtra(key, intent.extras?.getString(key))
+                                Log.d("TAG", "OnCreate $key Data is ${intent.extras?.getString(key)}")
+                            }
+                        }
+                        startActivity(nextAct)
+                        finish()
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w("TAG", "signInAnonymously:failure", task.exception)
+                        Toast.makeText(
+                            this, "Authentication failed.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
         }
 
         authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]

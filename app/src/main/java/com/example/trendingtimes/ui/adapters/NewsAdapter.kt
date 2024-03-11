@@ -2,14 +2,8 @@ package com.example.trendingtimes.ui.adapters
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.trendingtimes.R
@@ -17,12 +11,10 @@ import com.example.trendingtimes.data.Article
 import com.example.trendingtimes.data.News
 import com.example.trendingtimes.databinding.NewsItemBinding
 import com.example.trendingtimes.ui.activity.ReadNewsActivity
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
 
-class NewsAdapter(private val context : Context, private val newsList: List<Article>,private val longPress: LongPress):RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
+class NewsAdapter(private val context : Context, private val newsList: List<Article>,private val adapterInterface: AdapterInterface):RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
 
 
     class ViewHolder(private val binding: NewsItemBinding):RecyclerView.ViewHolder(binding.root){
@@ -40,19 +32,21 @@ class NewsAdapter(private val context : Context, private val newsList: List<Arti
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val newsItem = newsList[position]
         holder.mBinding.item = newsItem;
+        if (position == itemCount - 1){
+            adapterInterface.endOfList()
+        }
         holder.mBinding.apply {
-            Glide.with(context).load(newsItem.urlToImage).into(newsImage)
+            Glide.with(context).load(newsItem.urlToImage).placeholder(R.drawable.img_1).into(newsImage)
             newsPublicationTime.text = getTimeDifference(newsItem.publishedAt)
             newsTitle.setOnLongClickListener {
-                val db = FirebaseFirestore.getInstance()
-                val currentUser = FirebaseAuth.getInstance().currentUser
+
                 val news = News(
                         title = newsItem.title,
                         publishedAt = newsItem.publishedAt,
                         url = newsItem.url,
                         urlImage = newsItem.urlToImage ?: "")// or reference to the image)
 
-                longPress.didLongPress(news)
+                adapterInterface.didLongPress(news)
                 true
             }
             newsTitle.setOnClickListener {
@@ -93,6 +87,7 @@ class NewsAdapter(private val context : Context, private val newsList: List<Arti
     }
 }
 
-interface LongPress{
+interface AdapterInterface{
     fun didLongPress(news: News)
+    fun endOfList()
 }

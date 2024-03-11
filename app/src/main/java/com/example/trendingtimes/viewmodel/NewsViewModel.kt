@@ -51,16 +51,16 @@ class NewsViewModel @Inject constructor(private val newsRepository: NewsReposito
 
     private val _bookmarkedNews  = MutableLiveData<List<News>>()
     val bookmarkedNews = _bookmarkedNews
-    fun fetchNews(category: String, query: String) {
+    fun fetchNews(query: String,page:Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = newsRepository.getNewsWithQuery(query)
-            when (category) {
+            val response = newsRepository.getNewsWithQuery(query,page)
+            when (query) {
                 "entertainment" -> _entertainmentNewsResponse.postValue(response.body())
                 "health" -> _healthNewsResponse.postValue(response.body())
                 "science" -> _scienceNewsResponse.postValue(response.body())
                 "sports" -> _sportsNewsResponse.postValue(response.body())
                 "education" -> _educationNewsResponse.postValue(response.body())
-                "top_headlines" -> _topHeadlinesNewsResponse.postValue(response.body())
+                "Top Headlines" -> _topHeadlinesNewsResponse.postValue(response.body())
                 "technology" -> _technologyNewsResponse.postValue(response.body())
                 "opinion" -> _opinionNewsResponse.postValue(response.body())
                 "business" -> _businessNewsResponse.postValue(response.body())

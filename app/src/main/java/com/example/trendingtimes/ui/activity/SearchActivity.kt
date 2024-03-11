@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.trendingtimes.data.Article
 import com.example.trendingtimes.data.News
 import com.example.trendingtimes.databinding.ActivitySearchBinding
-import com.example.trendingtimes.ui.adapters.LongPress
+import com.example.trendingtimes.ui.adapters.AdapterInterface
 import com.example.trendingtimes.ui.adapters.NewsAdapter
 import com.example.trendingtimes.util.NetworkUtils
 import com.example.trendingtimes.viewmodel.NewsViewModel
@@ -24,6 +24,8 @@ class SearchActivity : AppCompatActivity() {
     lateinit var viewModel: NewsViewModel
 
     private var list = mutableListOf<Article>()
+    var currentPage = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
@@ -37,7 +39,7 @@ class SearchActivity : AppCompatActivity() {
         binding.searchedForTv.text = "$query In Search"
 
         if (query != null) {
-            viewModel.fetchNews("search",query)
+            viewModel.fetchNews(query,currentPage)
         }
 
         viewModel.searchNewsResponse.observe(this){
@@ -45,7 +47,7 @@ class SearchActivity : AppCompatActivity() {
                 binding.progressBar.visibility = View.GONE
                 list.clear()
                 list.addAll(it.articles)
-                val adapter = NewsAdapter(this,list,object : LongPress {
+                val adapter = NewsAdapter(this,list,object : AdapterInterface {
                     override fun didLongPress(news: News) {
                         viewModel.insertNews(news,
                             onSuccess = {
@@ -54,6 +56,10 @@ class SearchActivity : AppCompatActivity() {
                             onError = {
                                 Toast.makeText(this@SearchActivity,"Unable to bookmark news at the moment.",Toast.LENGTH_LONG).show()
                             })
+                    }
+
+                    override fun endOfList() {
+                        TODO("Not yet implemented")
                     }
                 })
                 binding.progressBar.visibility = View.GONE

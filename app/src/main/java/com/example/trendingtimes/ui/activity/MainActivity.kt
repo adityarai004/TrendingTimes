@@ -1,8 +1,11 @@
 package com.example.trendingtimes.ui.activity
 
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import com.bumptech.glide.Glide
@@ -59,22 +62,28 @@ class MainActivity : AppCompatActivity() {
 
 
         val currUser = FirebaseAuth.getInstance().currentUser
-        currUser?.let {
-            FirebaseFirestore.getInstance().collection("users")
-                .document(currUser.uid)
-                .get()
-                .addOnSuccessListener { docSnapshot ->
-                    if (docSnapshot != null) {
-                        val imageUrl = docSnapshot.get("imageUrl")
-                        Glide.with(this@MainActivity).load(
-                            imageUrl
-                        ).into(binding.accountIb)
-                    }
-                }
-                .addOnFailureListener {
-                    Log.d("TAG", "Exception is $it")
-                }
+        if (currUser?.isAnonymous == true){
+            binding.accountIb.visibility = View.GONE
         }
+        else{
+            currUser?.let {
+                FirebaseFirestore.getInstance().collection("users")
+                    .document(currUser.uid)
+                    .get()
+                    .addOnSuccessListener { docSnapshot ->
+                        if (docSnapshot != null) {
+                            val imageUrl = docSnapshot.get("imageUrl")
+                            Glide.with(this@MainActivity).load(
+                                imageUrl
+                            ).into(binding.accountIb)
+                        }
+                    }
+                    .addOnFailureListener {
+                        Log.d("TAG", "Exception is $it")
+                    }
+            }
+        }
+
     }
 
     private fun initialBindings(){
@@ -119,5 +128,19 @@ class MainActivity : AppCompatActivity() {
             binding.searchView.clearFocus()
             tab.text = tabTitles[position]
         }.attach()
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        if (event.action == MotionEvent.ACTION_DOWN) {
+            if (!binding.searchView.isFocused || !binding.searchView.getGlobalVisibleRect(Rect())) {
+                binding.searchView.clearFocus()
+            }
+        }
+        return super.onTouchEvent(event)
+    }
+    override fun onResume() {
+        super.onResume()
+        binding.searchView.setQuery("", false)
+        binding.rootLayout.requestFocus()
     }
 }
