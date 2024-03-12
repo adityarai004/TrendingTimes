@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import com.bumptech.glide.Glide
@@ -102,13 +103,16 @@ class MainActivity : AppCompatActivity() {
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
-                if (!p0.isNullOrEmpty()) {
+                if (!p0.isNullOrEmpty() && p0.length>=3) {
                     // Perform the search operation based on the query
                     val i = Intent(applicationContext, SearchActivity::class.java)
                     i.putExtra("query", p0)
                     i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
 
                     startActivity(i)
+                }
+                else{
+                    Toast.makeText(this@MainActivity,"Query should be at least of length 3.",Toast.LENGTH_LONG).show()
                 }
                 return true
             }

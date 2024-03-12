@@ -64,10 +64,22 @@ class NewsViewModel @Inject constructor(private val newsRepository: NewsReposito
                 "technology" -> _technologyNewsResponse.postValue(response.body())
                 "opinion" -> _opinionNewsResponse.postValue(response.body())
                 "business" -> _businessNewsResponse.postValue(response.body())
-                "search" -> _searchNewsResponse.postValue(response.body())
+
             }
             if (!response.isSuccessful) {
                 Log.d("TAG", "Limit reached")
+            }
+        }
+    }
+
+    fun searchNews(keyword: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = newsRepository.getSearchNews(keyword)
+            if(response.isSuccessful){
+                _searchNewsResponse.postValue(response.body())
+            }
+            else{
+                Log.d("TAG", "Search news error")
             }
         }
     }

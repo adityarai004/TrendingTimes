@@ -62,6 +62,7 @@ class NewsAdapter(private val context : Context, private val newsList: List<Arti
                     context.startActivity(Intent.createChooser(shareIntent, "Share Article"))
                 }
             }
+
         }
     }
 

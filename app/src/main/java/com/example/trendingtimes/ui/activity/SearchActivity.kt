@@ -39,7 +39,7 @@ class SearchActivity : AppCompatActivity() {
         binding.searchedForTv.text = "$query In Search"
 
         if (query != null) {
-            viewModel.fetchNews(query,currentPage)
+            viewModel.searchNews(query)
         }
 
         viewModel.searchNewsResponse.observe(this){
@@ -50,7 +50,8 @@ class SearchActivity : AppCompatActivity() {
                 val adapter = NewsAdapter(this,list,object : AdapterInterface {
                     override fun didLongPress(news: News) {
                         viewModel.insertNews(news,
-                            onSuccess = {
+                            onSuccess
+                            = {
                                 Toast.makeText(this@SearchActivity,"News bookmarked successfully",Toast.LENGTH_LONG).show()
                             },
                             onError = {
@@ -59,7 +60,7 @@ class SearchActivity : AppCompatActivity() {
                     }
 
                     override fun endOfList() {
-                        TODO("Not yet implemented")
+
                     }
                 })
                 binding.progressBar.visibility = View.GONE

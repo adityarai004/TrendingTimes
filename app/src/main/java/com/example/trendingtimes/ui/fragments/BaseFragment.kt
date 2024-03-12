@@ -25,7 +25,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     }
 
 //    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
+//        super.onViewCreated(view, savedInsta1nceState)
 //        if (NetworkUtils.isNetworkAvailable(requireContext()))
 //    }
 

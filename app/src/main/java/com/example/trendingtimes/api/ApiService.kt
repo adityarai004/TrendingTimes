@@ -13,4 +13,10 @@ interface ApiService {
          @Query("page") pageNumber: Int = 1,
          @Query("limit") limit:Int = 20
      ): Response<NewsResponse>
+
+
+    @GET("search/{keyword}")
+    suspend fun searchNews(
+        @Path("keyword") keyword:String
+    ): Response<NewsResponse>
 }

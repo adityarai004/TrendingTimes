@@ -11,6 +11,8 @@ import javax.inject.Inject
 class NewsRepository @Inject constructor(private val apiService: ApiService,
                                          private val localDB: ArticleDatabase) {
     suspend fun getNewsWithQuery(q: String,page: Int): Response<NewsResponse> = apiService.getEverythingNews(q, pageNumber = page)
+
+    suspend fun getSearchNews(keyword: String):Response<NewsResponse> = apiService.searchNews(keyword)
     suspend fun insertArticle(news: News) {
         localDB.articleDao().insertArticle(news)
     }
