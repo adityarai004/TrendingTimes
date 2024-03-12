@@ -1,4 +1,4 @@
-package com.example.trendingtimes
+package com.example.trendingtimes.util
 
 sealed class Resource<out R> {
     data class Success<out R>(val result: R) : Resource<R>()

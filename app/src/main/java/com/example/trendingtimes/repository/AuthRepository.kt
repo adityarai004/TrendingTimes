@@ -1,6 +1,6 @@
 package com.example.trendingtimes.repository
 
-import com.example.trendingtimes.Resource
+import com.example.trendingtimes.util.Resource
 import com.google.firebase.auth.FirebaseUser
 
 interface AuthRepository {

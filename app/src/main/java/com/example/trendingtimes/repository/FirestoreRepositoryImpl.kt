@@ -1,6 +1,6 @@
 package com.example.trendingtimes.repository
 
-import com.example.trendingtimes.data.News
+import com.example.trendingtimes.model.local.News
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore

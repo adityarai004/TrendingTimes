@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.trendingtimes.data.News
-import com.example.trendingtimes.data.NewsResponse
+import com.example.trendingtimes.model.local.News
+import com.example.trendingtimes.model.remote.NewsResponse
 import com.example.trendingtimes.repository.FirestoreRepository
 import com.example.trendingtimes.repository.NewsRepository
 import com.google.firebase.auth.FirebaseAuth
@@ -52,21 +52,23 @@ class NewsViewModel @Inject constructor(private val newsRepository: NewsReposito
     private val _bookmarkedNews  = MutableLiveData<List<News>>()
     val bookmarkedNews = _bookmarkedNews
     fun fetchNews(query: String,page:Int) {
+        // the below line is used to do something on the background thread
         viewModelScope.launch(Dispatchers.IO) {
             val response = newsRepository.getNewsWithQuery(query,page)
-            when (query) {
-                "entertainment" -> _entertainmentNewsResponse.postValue(response.body())
-                "health" -> _healthNewsResponse.postValue(response.body())
-                "science" -> _scienceNewsResponse.postValue(response.body())
-                "sports" -> _sportsNewsResponse.postValue(response.body())
-                "education" -> _educationNewsResponse.postValue(response.body())
-                "Top Headlines" -> _topHeadlinesNewsResponse.postValue(response.body())
-                "technology" -> _technologyNewsResponse.postValue(response.body())
-                "opinion" -> _opinionNewsResponse.postValue(response.body())
-                "business" -> _businessNewsResponse.postValue(response.body())
-
+            if (response.isSuccessful){
+                when (query) {
+                    "entertainment" -> _entertainmentNewsResponse.postValue(response.body())
+                    "health" -> _healthNewsResponse.postValue(response.body())
+                    "science" -> _scienceNewsResponse.postValue(response.body())
+                    "sports" -> _sportsNewsResponse.postValue(response.body())
+                    "education" -> _educationNewsResponse.postValue(response.body())
+                    "Top Headlines" -> _topHeadlinesNewsResponse.postValue(response.body())
+                    "technology" -> _technologyNewsResponse.postValue(response.body())
+                    "opinion" -> _opinionNewsResponse.postValue(response.body())
+                    "business" -> _businessNewsResponse.postValue(response.body())
+                }
             }
-            if (!response.isSuccessful) {
+            else {
                 Log.d("TAG", "Limit reached")
             }
         }
@@ -83,11 +85,14 @@ class NewsViewModel @Inject constructor(private val newsRepository: NewsReposito
             }
         }
     }
-    fun deleteNews(news: News, success: (Boolean) -> Unit,onError: (exception: String) -> Unit,) {
+
+    //Common function to delete bookmark news locally and remotely
+    fun deleteNews(news: News, success: (Boolean) -> Unit, onError: (exception: String) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             try{
                 firestoreRepository.deleteNews(news,FirebaseAuth.getInstance().currentUser!!)
 
+                //locally deleting news from db
                 newsRepository.deleteArticle(news)
 
                 withContext(Dispatchers.Main){
@@ -101,7 +106,9 @@ class NewsViewModel @Inject constructor(private val newsRepository: NewsReposito
             }
         }
     }
-    fun insertNews(news: News, onSuccess: () -> Unit,onError: (exception : String) -> Unit) {
+
+    //Common function to bookmark a news locally and remotely
+    fun insertNews(news: News, onSuccess: () -> Unit, onError: (exception : String) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 firestoreRepository.addNews(news,FirebaseAuth.getInstance().currentUser!!)

@@ -1,7 +1,7 @@
 package com.example.trendingtimes.util
 
 import androidx.room.TypeConverter
-import com.example.trendingtimes.data.Source
+import com.example.trendingtimes.model.remote.Source
 import com.google.gson.Gson
 
 class SourceTypeConverter {

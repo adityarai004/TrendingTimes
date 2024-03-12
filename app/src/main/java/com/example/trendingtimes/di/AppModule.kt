@@ -30,7 +30,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpLoggingInterceptor(): OkHttpClient{
+    fun provideOkHttpLoggingInterceptor(): OkHttpClient {
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BODY
         val client = OkHttpClient.Builder().addInterceptor(logging).build()
@@ -40,7 +40,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient):Retrofit{
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl(BASE_URL)
@@ -50,31 +50,40 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideRetrofitService(retrofit: Retrofit):ApiService{
+    fun provideRetrofitService(retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideNewsRepository(apiService: ApiService,articleDatabase: ArticleDatabase):NewsRepository{
-        return NewsRepository(apiService,articleDatabase)
+    fun provideNewsRepository(
+        apiService: ApiService,
+        articleDatabase: ArticleDatabase
+    ): NewsRepository {
+        return NewsRepository(apiService, articleDatabase)
     }
+
     @Singleton
     @Provides
-    fun provideNewsViewModel(newsRepository: NewsRepository,firestoreRepository: FirestoreRepository): NewsViewModel {
-        return NewsViewModel(newsRepository,firestoreRepository)
+    fun provideNewsViewModel(
+        newsRepository: NewsRepository,
+        firestoreRepository: FirestoreRepository
+    ): NewsViewModel {
+        return NewsViewModel(newsRepository, firestoreRepository)
     }
 
     @Provides
     @Singleton
-    fun provideFirestore():FirebaseFirestore =FirebaseFirestore.getInstance()
+    fun provideFirestore(): FirebaseFirestore = FirebaseFirestore.getInstance()
 
     @Provides
     @Singleton
     fun provideFirestoreRepository(impl: FirestoreRepositoryImpl): FirestoreRepository = impl
+
     @Provides
     @Singleton
     fun provideAuthRepository(impl: AuthRepositoryImpl): AuthRepository = impl
+
     @Provides
     @Singleton
     fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
@@ -82,6 +91,6 @@ object AppModule {
     @Provides
     @Singleton
     fun provideDB(@ApplicationContext context: Context): ArticleDatabase {
-        return Room.databaseBuilder(context,ArticleDatabase::class.java,"article").build()
+        return Room.databaseBuilder(context, ArticleDatabase::class.java, "article").build()
     }
 }

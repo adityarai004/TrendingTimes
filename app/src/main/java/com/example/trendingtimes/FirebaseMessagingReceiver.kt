@@ -29,16 +29,11 @@ class FirebaseMessagingReceiver : FirebaseMessagingService() {
         Log.d("TAG","Text is $text")
         val CHANNEL_ID = "HEADS_UP_NOTIFICATION"
 
-        val resultIntent = Intent(this, FeedbackActivity::class.java)
-        resultIntent.putExtra("extra_url",text)
-        val resultPendingIntent: PendingIntent? = PendingIntent.getActivity(this, 1, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-
         val builder = Notification.Builder(this, CHANNEL_ID)
             .setContentTitle(title)
             .setContentText(text)
             .setSmallIcon(R.drawable.done_icon)
             .setAutoCancel(true)
-            .setContentIntent(resultPendingIntent)
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             return

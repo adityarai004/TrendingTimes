@@ -10,7 +10,6 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.trendingtimes.ChangePasswordActivity
 import com.example.trendingtimes.R
 import com.example.trendingtimes.databinding.ActivitySettingsBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -42,7 +41,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         binding.changePassBtn.setOnClickListener {
-            startActivity(Intent(this,ChangePasswordActivity::class.java))
+            startActivity(Intent(this, ChangePasswordActivity::class.java))
         }
 
         if(currentNightMode){

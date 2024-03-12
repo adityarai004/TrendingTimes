@@ -1,6 +1,5 @@
 package com.example.trendingtimes.ui.adapters
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.util.Log
@@ -14,10 +13,9 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.trendingtimes.R
-import com.example.trendingtimes.data.Article
-import com.example.trendingtimes.data.News
+import com.example.trendingtimes.model.remote.Article
+import com.example.trendingtimes.model.local.News
 import com.example.trendingtimes.ui.activity.ReadNewsActivity
-import com.example.trendingtimes.viewmodel.NewsViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat

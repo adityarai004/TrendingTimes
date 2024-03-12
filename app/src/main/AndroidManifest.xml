@@ -19,7 +19,7 @@
         android:theme="@style/Theme.Material3.DayNight.NoActionBar"
         tools:targetApi="31">
         <activity
-            android:name=".ChangePasswordActivity"
+            android:name=".ui.activity.ChangePasswordActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activity.FeedbackActivity"

@@ -10,7 +10,7 @@ import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.trendingtimes.MainApplication
-import com.example.trendingtimes.data.Feedback
+import com.example.trendingtimes.model.remote.Feedback
 import com.example.trendingtimes.databinding.ActivityFeedbackBinding
 
 class FeedbackActivity : AppCompatActivity() {

@@ -7,8 +7,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.trendingtimes.ui.adapters.NewsAdapter
 import com.example.trendingtimes.R
-import com.example.trendingtimes.data.Article
-import com.example.trendingtimes.data.News
+import com.example.trendingtimes.model.remote.Article
+import com.example.trendingtimes.model.local.News
 import com.example.trendingtimes.databinding.FragmentEntertainmentNewsBinding
 import com.example.trendingtimes.ui.adapters.AdapterInterface
 import com.example.trendingtimes.util.NetworkUtils

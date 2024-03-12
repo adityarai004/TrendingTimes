@@ -26,6 +26,8 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         mAuth = FirebaseAuth.getInstance()
+
+        //this code is for handling push notifications and eveyr launch
         if (FirebaseAuth.getInstance().currentUser != null) {
             val nextAct = Intent(this, MainActivity::class.java)
             if (intent != null && intent.hasExtra("news")) {
@@ -37,7 +39,7 @@ class LoginActivity : AppCompatActivity() {
             startActivity(nextAct)
             finish()
         }
-
+        //
         binding.continueAsAGuest.setOnClickListener {
             mAuth.signInAnonymously()
                 .addOnCompleteListener(

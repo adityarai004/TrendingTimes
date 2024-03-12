@@ -7,14 +7,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.trendingtimes.R
-import com.example.trendingtimes.data.Article
-import com.example.trendingtimes.data.News
+import com.example.trendingtimes.model.remote.Article
+import com.example.trendingtimes.model.local.News
 import com.example.trendingtimes.databinding.NewsItemBinding
 import com.example.trendingtimes.ui.activity.ReadNewsActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
-class NewsAdapter(private val context : Context, private val newsList: List<Article>,private val adapterInterface: AdapterInterface):RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
+class NewsAdapter(private val context : Context, private val newsList: List<Article>, private val adapterInterface: AdapterInterface):RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
 
 
     class ViewHolder(private val binding: NewsItemBinding):RecyclerView.ViewHolder(binding.root){
@@ -29,6 +29,7 @@ class NewsAdapter(private val context : Context, private val newsList: List<Arti
         return newsList.size
     }
 
+    // this function is automatically called for every item in the list
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val newsItem = newsList[position]
         holder.mBinding.item = newsItem;
@@ -36,6 +37,7 @@ class NewsAdapter(private val context : Context, private val newsList: List<Arti
             adapterInterface.endOfList()
         }
         holder.mBinding.apply {
+            // we have used glide to load image from an url
             Glide.with(context).load(newsItem.urlToImage).placeholder(R.drawable.img_1).into(newsImage)
             newsPublicationTime.text = getTimeDifference(newsItem.publishedAt)
             newsTitle.setOnLongClickListener {
@@ -66,6 +68,7 @@ class NewsAdapter(private val context : Context, private val newsList: List<Arti
         }
     }
 
+    // function to convert 2024-03-11T15:59:10Z to '<something> ago'
     private fun getTimeDifference(timestamp: String): String {
         val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
         sdf.timeZone = TimeZone.getTimeZone("UTC")

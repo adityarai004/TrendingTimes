@@ -1,4 +1,4 @@
-package com.example.trendingtimes.data
+package com.example.trendingtimes.model.remote
 
 data class NewsResponse(
     val totalResults: Int,

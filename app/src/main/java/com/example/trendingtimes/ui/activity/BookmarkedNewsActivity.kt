@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trendingtimes.R
-import com.example.trendingtimes.data.News
+import com.example.trendingtimes.model.local.News
 import com.example.trendingtimes.databinding.ActivityBookmarkedNewsBinding
 import com.example.trendingtimes.ui.adapters.BookmarkNewsAdapter
 import com.example.trendingtimes.util.NetworkUtils

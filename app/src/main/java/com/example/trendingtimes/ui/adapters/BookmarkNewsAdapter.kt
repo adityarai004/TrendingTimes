@@ -11,11 +11,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.trendingtimes.R
-import com.example.trendingtimes.data.News
+import com.example.trendingtimes.model.local.News
 import com.example.trendingtimes.ui.activity.ReadNewsActivity
-import java.text.SimpleDateFormat
-import java.util.Locale
-import java.util.TimeZone
 
 class BookmarkNewsAdapter(private val context: Context,val newsList: MutableList<News>):RecyclerView.Adapter<BookmarkNewsAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {

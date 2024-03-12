@@ -14,7 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.trendingtimes.R
-import com.example.trendingtimes.data.User
+import com.example.trendingtimes.model.remote.User
 import com.example.trendingtimes.databinding.ActivitySignUpBinding
 import com.example.trendingtimes.viewmodel.AuthViewModel
 import com.google.firebase.auth.FirebaseAuth

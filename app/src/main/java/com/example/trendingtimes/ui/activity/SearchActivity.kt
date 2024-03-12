@@ -6,8 +6,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.trendingtimes.data.Article
-import com.example.trendingtimes.data.News
+import com.example.trendingtimes.model.remote.Article
+import com.example.trendingtimes.model.local.News
 import com.example.trendingtimes.databinding.ActivitySearchBinding
 import com.example.trendingtimes.ui.adapters.AdapterInterface
 import com.example.trendingtimes.ui.adapters.NewsAdapter

@@ -1,4 +1,4 @@
-package com.example.trendingtimes.data
+package com.example.trendingtimes.model.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
