@@ -85,9 +85,11 @@ class SignUpActivity : AppCompatActivity() {
             val password: String = binding.passwordEt.text?.toString() ?: ""
             val gender: String = maleOrFemale
             val dob: String = binding.dob.findViewById<TextView>(R.id.userDetailsTextView).text.toString()
+            val containsLetter = password.any { it.isLetter() }
+            val containsDigit = password.any { it.isDigit() }
 
 
-            if (name != "" && email != "" && password != "" && gender != "" && email.endsWith("@gmail.com") && pickedImg != null) {
+            if (name != "" && !name.contains(Regex("\\d")) && email != "" && password != "" && containsLetter && containsDigit && gender != "" && email.endsWith("@gmail.com") && pickedImg != null) {
                 Log.d("TAG", "entered successfully with gender = $gender")
                 binding.progressBar.visibility = View.VISIBLE
                 GlobalScope.launch(Dispatchers.IO) {

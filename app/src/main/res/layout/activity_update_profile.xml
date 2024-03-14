@@ -40,18 +40,6 @@
                         android:contentDescription="@string/back"
                         android:src="@drawable/baseline_arrow_back_24" />
 
-
-                    <ImageButton
-                        android:id="@+id/settings_ib"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:backgroundTint="#885ADB"
-                        android:src="@drawable/baseline_settings_24"
-                        android:thumb="@drawable/thumb"
-                        app:tint="@color/white"
-                        app:track="@drawable/track" />
-
                     <TextView
                         android:id="@+id/toolbar_title"
                         android:layout_width="wrap_content"
@@ -61,17 +49,6 @@
                         android:textColor="@color/white"
                         android:textSize="25dp"
                         android:textStyle="italic" />
-
-                    <ImageButton
-                        android:id="@+id/bookmarks_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:background="#ffffff"
-                        android:backgroundTint="#885ADB"
-                        android:padding="10dp"
-                        android:src="@drawable/baseline_bookmarks_24" />
-
 
                 </androidx.appcompat.widget.Toolbar>
             </com.google.android.material.appbar.AppBarLayout>

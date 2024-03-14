@@ -16,7 +16,10 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class NewsViewModel @Inject constructor(private val newsRepository: NewsRepository,private val firestoreRepository: FirestoreRepository) :
+class NewsViewModel @Inject constructor(
+    private val newsRepository: NewsRepository,
+    private val firestoreRepository: FirestoreRepository
+) :
     ViewModel() {
 
     private val _businessNewsResponse = MutableLiveData<NewsResponse>()
@@ -49,13 +52,13 @@ class NewsViewModel @Inject constructor(private val newsRepository: NewsReposito
     private val _searchNewsResponse = MutableLiveData<NewsResponse>()
     val searchNewsResponse = _searchNewsResponse
 
-    private val _bookmarkedNews  = MutableLiveData<List<News>>()
+    private val _bookmarkedNews = MutableLiveData<List<News>>()
     val bookmarkedNews = _bookmarkedNews
-    fun fetchNews(query: String,page:Int) {
+    fun fetchNews(query: String, page: Int) {
         // the below line is used to do something on the background thread
         viewModelScope.launch(Dispatchers.IO) {
-            val response = newsRepository.getNewsWithQuery(query,page)
-            if (response.isSuccessful){
+            val response = newsRepository.getNewsWithQuery(query, page)
+            if (response.isSuccessful) {
                 when (query) {
                     "entertainment" -> _entertainmentNewsResponse.postValue(response.body())
                     "health" -> _healthNewsResponse.postValue(response.body())
@@ -67,20 +70,18 @@ class NewsViewModel @Inject constructor(private val newsRepository: NewsReposito
                     "opinion" -> _opinionNewsResponse.postValue(response.body())
                     "business" -> _businessNewsResponse.postValue(response.body())
                 }
-            }
-            else {
+            } else {
                 Log.d("TAG", "Limit reached")
             }
         }
     }
 
-    fun searchNews(keyword: String){
+    fun searchNews(keyword: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val response = newsRepository.getSearchNews(keyword)
-            if(response.isSuccessful){
+            if (response.isSuccessful) {
                 _searchNewsResponse.postValue(response.body())
-            }
-            else{
+            } else {
                 Log.d("TAG", "Search news error")
             }
         }
@@ -89,18 +90,18 @@ class NewsViewModel @Inject constructor(private val newsRepository: NewsReposito
     //Common function to delete bookmark news locally and remotely
     fun deleteNews(news: News, success: (Boolean) -> Unit, onError: (exception: String) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            try{
-                firestoreRepository.deleteNews(news,FirebaseAuth.getInstance().currentUser!!)
+            try {
+                firestoreRepository.deleteNews(news, FirebaseAuth.getInstance().currentUser!!)
 
                 //locally deleting news from db
                 newsRepository.deleteArticle(news)
 
-                withContext(Dispatchers.Main){
+                withContext(Dispatchers.Main) {
                     success(true)
                 }
-            } catch (e: Exception){
-                Log.e("ERROR","Something went wrong $e")
-                withContext(Dispatchers.Main){
+            } catch (e: Exception) {
+                Log.e("ERROR", "Something went wrong $e")
+                withContext(Dispatchers.Main) {
                     e.message?.let { onError(it) }
                 }
             }
@@ -108,18 +109,18 @@ class NewsViewModel @Inject constructor(private val newsRepository: NewsReposito
     }
 
     //Common function to bookmark a news locally and remotely
-    fun insertNews(news: News, onSuccess: () -> Unit, onError: (exception : String) -> Unit) {
+    fun insertNews(news: News, onSuccess: () -> Unit, onError: (exception: String) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                firestoreRepository.addNews(news,FirebaseAuth.getInstance().currentUser!!)
+                firestoreRepository.addNews(news, FirebaseAuth.getInstance().currentUser!!)
 
                 newsRepository.insertArticle(news)
-                withContext(Dispatchers.Main){
+                withContext(Dispatchers.Main) {
                     onSuccess()
                 }
-            } catch (e: Exception){
-                Log.e("ERROR","Something went wrong $e")
-                withContext(Dispatchers.Main){
+            } catch (e: Exception) {
+                Log.e("ERROR", "Something went wrong $e")
+                withContext(Dispatchers.Main) {
                     e.message?.let { onError(it) }
                 }
             }
@@ -132,7 +133,7 @@ class NewsViewModel @Inject constructor(private val newsRepository: NewsReposito
         }
     }
 
-    fun getNewsFromRemote(){
+    fun getNewsFromRemote() {
         viewModelScope.launch(Dispatchers.IO) {
             firestoreRepository.observeNewsList(onSuccess = {
                 _bookmarkedNews.postValue(it)
