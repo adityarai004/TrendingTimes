@@ -14,7 +14,7 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
             Resource.Success(result.user!!)
         }catch (e:Exception){
             e.printStackTrace()
-            Resource.Failure(e)
+            Resource.Failure(e.message)
         }
     }
 
@@ -24,7 +24,7 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
             Resource.Success(result.user!!)
         }catch (e:Exception){
             e.printStackTrace()
-            Resource.Failure(e)
+            Resource.Failure(e.message)
         }
     }
 

@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import com.bumptech.glide.Glide
+import com.example.trendingtimes.auth.presentation.ui.AuthViewModel
 import com.example.trendingtimes.databinding.ActivityMainBinding
 import com.example.trendingtimes.ui.adapters.ViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
@@ -21,6 +22,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -41,11 +43,13 @@ class MainActivity : AppCompatActivity() {
         "Opinion"
     )
 
+    @Inject lateinit var authVm: AuthViewModel
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        authVm.karo()
         GlobalScope.launch {
             try {
                 val token = FirebaseMessaging.getInstance().token.await()

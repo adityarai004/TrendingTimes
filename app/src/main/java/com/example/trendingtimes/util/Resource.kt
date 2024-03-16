@@ -1,7 +1,7 @@
 package com.example.trendingtimes.util
 
-sealed class Resource<out R> {
-    data class Success<out R>(val result: R) : Resource<R>()
-    data class Failure(val exception: Exception) : Resource<Nothing>()
-    object Loading : Resource<Nothing>()
+sealed class Resource<out T> {
+    data class Success<out T>(val result: T) : Resource<T>()
+    data class Failure(val error: String?) : Resource<Nothing>()
+    data object Loading : Resource<Nothing>()
 }

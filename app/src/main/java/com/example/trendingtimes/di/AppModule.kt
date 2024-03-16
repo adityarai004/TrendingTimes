@@ -30,26 +30,6 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpLoggingInterceptor(): OkHttpClient {
-        val logging = HttpLoggingInterceptor()
-        logging.level = HttpLoggingInterceptor.Level.BODY
-        val client = OkHttpClient.Builder().addInterceptor(logging).build()
-        return client
-
-    }
-
-    @Provides
-    @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
-        return Retrofit.Builder()
-            .client(okHttpClient)
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
-    @Provides
-    @Singleton
     fun provideRetrofitService(retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
     }
