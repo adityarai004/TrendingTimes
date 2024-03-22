@@ -1,47 +1,44 @@
 package com.example.trendingtimes.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trendingtimes.R
+import com.example.trendingtimes.databinding.ActivityHistoryBinding
 import com.example.trendingtimes.model.local.News
-import com.example.trendingtimes.databinding.ActivityBookmarkedNewsBinding
 import com.example.trendingtimes.ui.adapters.BookmarkNewsAdapter
 import com.example.trendingtimes.util.NetworkUtils
-import com.example.trendingtimes.viewmodel.AuthViewModel
 import com.example.trendingtimes.viewmodel.NewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class BookmarkedNewsActivity : AppCompatActivity() {
+class HistoryActivity : AppCompatActivity() {
     private var newsData = mutableListOf<News>()
     private lateinit var toolbar: Toolbar
-    private lateinit var binding: ActivityBookmarkedNewsBinding
     private lateinit var adapter: BookmarkNewsAdapter
 
     @Inject
     lateinit var viewModel: NewsViewModel
 
-    @Inject
-    lateinit var firebaseViewModel: AuthViewModel
+    private lateinit var binding: ActivityHistoryBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityBookmarkedNewsBinding.inflate(layoutInflater)
+        binding = ActivityHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        toolbar = findViewById(R.id.bookmark_toolbar)
+        toolbar = findViewById(R.id.history_toolbar)
         setSupportActionBar(toolbar)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.title = "Bookmarks"
+        supportActionBar?.title = "History"
 
-        val rv = findViewById<RecyclerView>(R.id.bookmarked_recyclerView)
-        binding.bookmarkedRecyclerView.layoutManager =
+        val rv = findViewById<RecyclerView>(R.id.history_recyclerView)
+        binding.historyRecyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true)
 
         loadData()
@@ -66,17 +63,17 @@ class BookmarkedNewsActivity : AppCompatActivity() {
                         if (direction == ItemTouchHelper.RIGHT) {
                             rightSwipeActivated = true
 
-                            viewModel.deleteNews(newsData[viewHolder.adapterPosition], success = {
+                            viewModel.deleteHistory(newsData[viewHolder.adapterPosition], success = {
                                 if (it) {
                                     Toast.makeText(
-                                        this@BookmarkedNewsActivity,
-                                        "Bookmarked news deleted successfully",
+                                        this@HistoryActivity,
+                                        "News removed from history",
                                         Toast.LENGTH_LONG
                                     ).show()
                                 }
                             }, onError = {
                                 Toast.makeText(
-                                    this@BookmarkedNewsActivity,
+                                    this@HistoryActivity,
                                     "Exception $it occurred",
                                     Toast.LENGTH_LONG
                                 ).show()
@@ -101,29 +98,24 @@ class BookmarkedNewsActivity : AppCompatActivity() {
     private fun loadData() {
         if (NetworkUtils.isNetworkAvailable(this)) {
             loadDataFromFirestore()
-        } else {
-            loadDataFromLocal()
         }
     }
 
     private fun loadDataFromFirestore() {
-        viewModel.getNewsFromRemote()
-        viewModel.bookmarkedNews.observe(this) {
+        viewModel.getHistory()
+        viewModel.historyNews.observe(this) {
             onSuccess(it)
         }
     }
-
-    private fun loadDataFromLocal() {
-        viewModel.getNewsFromDB()
-        viewModel.bookmarkedNews.observe(this) { articles ->
-            onSuccess(articles)
-        }
-    }
-
     private fun onSuccess(newsList: List<News>) {
         newsData.clear()
         newsData.addAll(newsList)
         adapter = BookmarkNewsAdapter(this, newsData)
-        binding.bookmarkedRecyclerView.adapter = adapter
+        binding.historyRecyclerView.adapter = adapter
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
     }
 }

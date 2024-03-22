@@ -1,5 +1,6 @@
 package com.example.trendingtimes.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -10,8 +11,11 @@ import com.example.trendingtimes.R
 import com.example.trendingtimes.model.remote.Article
 import com.example.trendingtimes.model.local.News
 import com.example.trendingtimes.databinding.FragmentBusinessNewsBinding
+import com.example.trendingtimes.ui.activity.ReadNewsActivity
 import com.example.trendingtimes.ui.adapters.AdapterInterface
+import com.example.trendingtimes.util.Common.Utils.gotoReadNewsActivity
 import com.example.trendingtimes.util.NetworkUtils
+import com.example.trendingtimes.viewmodel.AuthViewModel
 import com.example.trendingtimes.viewmodel.NewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -23,6 +27,8 @@ class BusinessNewsFragment : Fragment(R.layout.fragment_business_news) {
     @Inject
     lateinit var viewModel: NewsViewModel
 
+    @Inject
+    lateinit var firebaseViewModel: AuthViewModel
     val list = mutableListOf<Article>()
     var currentPage = 1
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,6 +64,16 @@ class BusinessNewsFragment : Fragment(R.layout.fragment_business_news) {
             override fun endOfList() {
                 currentPage++
                 viewModel.fetchNews("business",currentPage)
+            }
+
+            override fun newsClicked(news: News) {
+                viewModel.addNewsToHistory(news, onSuccess = {
+
+                },
+                    onError = {
+
+                    })
+                gotoReadNewsActivity(requireActivity(), news.url, requireContext())
             }
         })
 

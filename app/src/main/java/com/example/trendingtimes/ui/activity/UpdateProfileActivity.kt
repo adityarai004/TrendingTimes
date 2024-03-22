@@ -1,5 +1,6 @@
 package com.example.trendingtimes.ui.activity
 
+import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -73,6 +74,10 @@ class UpdateProfileActivity : AppCompatActivity() {
 
         binding.addPersonFab.setOnClickListener{
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
+
+        binding.historyBtn?.setOnClickListener {
+            startActivity(Intent(this, HistoryActivity::class.java))
         }
 
         val currUser = FirebaseAuth.getInstance().currentUser

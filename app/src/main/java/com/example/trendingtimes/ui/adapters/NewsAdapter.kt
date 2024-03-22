@@ -52,9 +52,12 @@ class NewsAdapter(private val context : Context, private val newsList: List<Arti
                 true
             }
             newsTitle.setOnClickListener {
-                val intent = Intent(context, ReadNewsActivity::class.java)
-                intent.putExtra(ReadNewsActivity.EXTRA_URL, newsItem.url)
-                context.startActivity(intent)
+                val news = News(
+                    title = newsItem.title,
+                    publishedAt = newsItem.publishedAt,
+                    url = newsItem.url,
+                    urlImage = newsItem.urlToImage ?: "")
+                adapterInterface.newsClicked(news)
             }
             shareButton.setOnClickListener {
                 val shareIntent = Intent(Intent.ACTION_SEND)
@@ -94,4 +97,6 @@ class NewsAdapter(private val context : Context, private val newsList: List<Arti
 interface AdapterInterface{
     fun didLongPress(news: News)
     fun endOfList()
+
+    fun newsClicked(news: News)
 }

@@ -11,7 +11,10 @@ import com.example.trendingtimes.model.remote.Article
 import com.example.trendingtimes.model.local.News
 import com.example.trendingtimes.databinding.FragmentEducationNewsBinding
 import com.example.trendingtimes.ui.adapters.AdapterInterface
+import com.example.trendingtimes.util.Common
+import com.example.trendingtimes.util.Common.Utils.gotoReadNewsActivity
 import com.example.trendingtimes.util.NetworkUtils
+import com.example.trendingtimes.viewmodel.AuthViewModel
 import com.example.trendingtimes.viewmodel.NewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -22,6 +25,10 @@ class EducationNewsFragment : Fragment(R.layout.fragment_education_news) {
 
     @Inject
     lateinit var viewModel: NewsViewModel
+
+    @Inject
+    lateinit var firebaseViewModel: AuthViewModel
+
     private var currentPage = 1
     val list = mutableListOf<Article>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,6 +64,16 @@ class EducationNewsFragment : Fragment(R.layout.fragment_education_news) {
             override fun endOfList() {
                 currentPage++
                 viewModel.fetchNews("education", currentPage + 1)
+            }
+
+            override fun newsClicked(news: News) {
+                viewModel.addNewsToHistory(news, onSuccess = {
+
+                },
+                    onError = {
+
+                    })
+                gotoReadNewsActivity(requireActivity(), news.url, requireContext())
             }
         })
         binding.educationRv.layoutManager = LinearLayoutManager(

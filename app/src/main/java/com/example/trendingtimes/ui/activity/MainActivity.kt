@@ -145,6 +145,6 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         binding.searchView.setQuery("", false)
-        binding.rootLayout.requestFocus()
+        binding.searchView.clearFocus()
     }
 }

@@ -11,7 +11,10 @@ import com.example.trendingtimes.model.remote.Article
 import com.example.trendingtimes.model.local.News
 import com.example.trendingtimes.databinding.FragmentTechnologyNewsBinding
 import com.example.trendingtimes.ui.adapters.AdapterInterface
+import com.example.trendingtimes.util.Common
+import com.example.trendingtimes.util.Common.Utils.gotoReadNewsActivity
 import com.example.trendingtimes.util.NetworkUtils
+import com.example.trendingtimes.viewmodel.AuthViewModel
 import com.example.trendingtimes.viewmodel.NewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -22,6 +25,10 @@ class TechnologyNewsFragment : Fragment(R.layout.fragment_technology_news) {
 
     @Inject
     lateinit var viewModel: NewsViewModel
+
+    @Inject
+    lateinit var firebaseViewModel: AuthViewModel
+
     val list = mutableListOf<Article>()
     var currentPage = 1
 
@@ -40,24 +47,26 @@ class TechnologyNewsFragment : Fragment(R.layout.fragment_technology_news) {
             override fun didLongPress(news: News) {
                 viewModel.insertNews(news,
                     onSuccess = {
-                        Toast.makeText(
-                            requireContext(),
-                            "News bookmarked successfully",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(requireContext(), "News bookmarked successfully", Toast.LENGTH_LONG).show()
                     },
                     onError = {
-                        Toast.makeText(
-                            requireContext(),
-                            "Unable to bookmark news at the moment.",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(requireContext(),"Unable to bookmark news at the moment.", Toast.LENGTH_LONG).show()
                     })
             }
 
             override fun endOfList() {
                 currentPage++
                 viewModel.fetchNews("technology", currentPage + 1)
+            }
+
+            override fun newsClicked(news: News) {
+                viewModel.addNewsToHistory(news, onSuccess = {
+
+                },
+                    onError = {
+
+                    })
+                gotoReadNewsActivity(requireActivity(), news.url, requireContext())
             }
         })
 

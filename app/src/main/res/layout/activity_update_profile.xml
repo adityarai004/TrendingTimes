@@ -154,6 +154,16 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/dob_custom_view" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/history_btn"
+                    android:layout_margin="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/gender_custom_view"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:text="History"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>

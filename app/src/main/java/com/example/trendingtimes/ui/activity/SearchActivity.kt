@@ -12,6 +12,7 @@ import com.example.trendingtimes.databinding.ActivitySearchBinding
 import com.example.trendingtimes.ui.adapters.AdapterInterface
 import com.example.trendingtimes.ui.adapters.NewsAdapter
 import com.example.trendingtimes.util.NetworkUtils
+import com.example.trendingtimes.viewmodel.AuthViewModel
 import com.example.trendingtimes.viewmodel.NewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -22,6 +23,9 @@ class SearchActivity : AppCompatActivity() {
 
     @Inject
     lateinit var viewModel: NewsViewModel
+
+    @Inject
+    lateinit var firebaseViewModel: AuthViewModel
 
     private var list = mutableListOf<Article>()
     var currentPage = 1
@@ -49,7 +53,7 @@ class SearchActivity : AppCompatActivity() {
                 list.addAll(it.articles)
                 val adapter = NewsAdapter(this,list,object : AdapterInterface {
                     override fun didLongPress(news: News) {
-                        viewModel.insertNews(news,
+                        firebaseViewModel.insertNews(news,
                             onSuccess
                             = {
                                 Toast.makeText(this@SearchActivity,"News bookmarked successfully",Toast.LENGTH_LONG).show()
@@ -61,6 +65,10 @@ class SearchActivity : AppCompatActivity() {
 
                     override fun endOfList() {
 
+                    }
+
+                    override fun newsClicked(news: News) {
+                        TODO("Not yet implemented")
                     }
                 })
                 binding.progressBar.visibility = View.GONE

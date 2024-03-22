@@ -54,6 +54,9 @@ class NewsViewModel @Inject constructor(
 
     private val _bookmarkedNews = MutableLiveData<List<News>>()
     val bookmarkedNews = _bookmarkedNews
+
+    private val _historyNews = MutableLiveData<List<News>>()
+    val historyNews = _historyNews
     fun fetchNews(query: String, page: Int) {
         // the below line is used to do something on the background thread
         viewModelScope.launch(Dispatchers.IO) {
@@ -127,6 +130,40 @@ class NewsViewModel @Inject constructor(
         }
     }
 
+    fun addNewsToHistory(news: News, onSuccess: () -> Unit, onError: (exception: String) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                firestoreRepository.addNewsToHistory(news, FirebaseAuth.getInstance().currentUser!!)
+                withContext(Dispatchers.Main) {
+                    onSuccess()
+                }
+            } catch (e: Exception) {
+                Log.e("ERROR", "Something went wrong $e")
+                withContext(Dispatchers.Main) {
+                    e.message?.let { onError(it) }
+                }
+            }
+        }
+    }
+
+    fun deleteHistory(news: News, success: (Boolean) -> Unit, onError: (exception: String) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                firestoreRepository.deleteHistory(news, FirebaseAuth.getInstance().currentUser!!)
+
+
+                withContext(Dispatchers.Main) {
+                    success(true)
+                }
+            } catch (e: Exception) {
+                Log.e("ERROR", "Something went wrong $e")
+                withContext(Dispatchers.Main) {
+                    e.message?.let { onError(it) }
+                }
+            }
+        }
+    }
+
     fun getNewsFromDB() {
         viewModelScope.launch(Dispatchers.IO) {
             _bookmarkedNews.postValue(newsRepository.getAllNews())
@@ -137,6 +174,17 @@ class NewsViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             firestoreRepository.observeNewsList(onSuccess = {
                 _bookmarkedNews.postValue(it)
+            },
+                onError = {
+
+                })
+        }
+    }
+
+    fun getHistory() {
+        viewModelScope.launch(Dispatchers.IO) {
+            firestoreRepository.observeHistoryNewsList(onSuccess = {
+                _historyNews.postValue(it)
             },
                 onError = {
 

@@ -11,6 +11,7 @@ import com.example.trendingtimes.repository.FirestoreRepository
 import com.example.trendingtimes.repository.FirestoreRepositoryImpl
 import com.example.trendingtimes.repository.NewsRepository
 import com.example.trendingtimes.util.Constants.Companion.BASE_URL
+import com.example.trendingtimes.viewmodel.AuthViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
@@ -83,6 +84,14 @@ object AppModule {
     @Provides
     @Singleton
     fun provideAuthRepository(impl: AuthRepositoryImpl): AuthRepository = impl
+
+    @Provides
+    @Singleton
+    fun provideAuthViewModel(authRepository: AuthRepository,
+                             firestoreRepository: FirestoreRepository,
+                             newsRepository: NewsRepository): AuthViewModel {
+        return AuthViewModel(authRepository,firestoreRepository,newsRepository)
+    }
 
     @Provides
     @Singleton
