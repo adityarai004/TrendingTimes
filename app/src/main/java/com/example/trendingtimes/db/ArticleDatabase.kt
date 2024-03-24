@@ -1,6 +1,6 @@
 package com.example.trendingtimes.db
 
-import com.example.trendingtimes.util.SourceTypeConverter
+import com.example.trendingtimes.core.util.SourceTypeConverter
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters

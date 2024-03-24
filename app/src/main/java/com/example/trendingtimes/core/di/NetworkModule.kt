@@ -1,6 +1,6 @@
 package com.example.trendingtimes.core.di
 
-import com.example.trendingtimes.util.Constants
+import com.example.trendingtimes.core.util.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

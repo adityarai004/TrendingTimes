@@ -1,4 +1,4 @@
-package com.example.trendingtimes.util
+package com.example.trendingtimes.core.util
 
 import android.content.Context
 import android.net.ConnectivityManager

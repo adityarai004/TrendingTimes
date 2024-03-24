@@ -11,7 +11,7 @@ import com.example.trendingtimes.model.local.News
 import com.example.trendingtimes.databinding.ActivitySearchBinding
 import com.example.trendingtimes.ui.adapters.AdapterInterface
 import com.example.trendingtimes.ui.adapters.NewsAdapter
-import com.example.trendingtimes.util.NetworkUtils
+import com.example.trendingtimes.core.util.NetworkUtils
 import com.example.trendingtimes.viewmodel.NewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

@@ -1,4 +1,4 @@
-package com.example.trendingtimes.util
+package com.example.trendingtimes.core.util
 
 import androidx.room.TypeConverter
 import com.example.trendingtimes.model.remote.Source

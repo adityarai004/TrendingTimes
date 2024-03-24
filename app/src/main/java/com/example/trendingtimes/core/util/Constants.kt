@@ -1,4 +1,4 @@
-package com.example.trendingtimes.util
+package com.example.trendingtimes.core.util
 
 class Constants {
     //anjali 809df147eb4044318d0976595e41017d

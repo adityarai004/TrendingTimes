@@ -1,6 +1,6 @@
 package com.example.trendingtimes.repository
 
-import com.example.trendingtimes.util.Resource
+import com.example.trendingtimes.core.util.Resource
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.tasks.await
