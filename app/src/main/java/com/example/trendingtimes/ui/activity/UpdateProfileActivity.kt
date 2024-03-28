@@ -91,46 +91,46 @@ class UpdateProfileActivity : AppCompatActivity() {
                         val dob = docSnapshot.get("dob")
                         val gender = docSnapshot.get("gender")
                         binding.tv1.text = name.toString()
-                        binding.nameCustomView.setUserDetails(
-                            name.toString(),
-                            "Name",
-                            object : SomethingUpdated {
-                                override fun doUpdate(didUpdate: Boolean, newData: String) {
-                                    if (didUpdate) {
-                                        updateUserInfo("name",newData)
-                                    }
-                                }
-                            })
-                        binding.emailCustomView.setUserDetails(
-                            email.toString(),
-                            "Email",
-                            object : SomethingUpdated {
-                                override fun doUpdate(didUpdate: Boolean, newData: String) {
-                                    if (didUpdate) {
-                                        updateUserInfo("email",newData)
-                                    }
-                                }
-                            })
-                        binding.dobCustomView.setUserDetails(
-                            dob.toString(),
-                            "DOB",
-                            object : SomethingUpdated {
-                                override fun doUpdate(didUpdate: Boolean, newData: String) {
-                                    if (didUpdate) {
-                                        updateUserInfo("dob",newData)
-                                    }
-                                }
-                            })
-                        binding.genderCustomView.setUserDetails(
-                            gender.toString(),
-                            "Gender",
-                            object : SomethingUpdated {
-                                override fun doUpdate(didUpdate: Boolean, newData: String) {
-                                    if (didUpdate) {
-                                        updateUserInfo("gender",newData)
-                                    }
-                                }
-                            })
+//                        binding.nameCustomView.setUserDetails(
+//                            name.toString(),
+//                            "Name",
+//                            object : SomethingUpdated {
+//                                override fun doUpdate(didUpdate: Boolean, newData: String) {
+//                                    if (didUpdate) {
+//                                        updateUserInfo("name",newData)
+//                                    }
+//                                }
+//                            })
+//                        binding.emailCustomView.setUserDetails(
+//                            email.toString(),
+//                            "Email",
+//                            object : SomethingUpdated {
+//                                override fun doUpdate(didUpdate: Boolean, newData: String) {
+//                                    if (didUpdate) {
+//                                        updateUserInfo("email",newData)
+//                                    }
+//                                }
+//                            })
+//                        binding.dobCustomView.setUserDetails(
+//                            dob.toString(),
+//                            "DOB",
+//                            object : SomethingUpdated {
+//                                override fun doUpdate(didUpdate: Boolean, newData: String) {
+//                                    if (didUpdate) {
+//                                        updateUserInfo("dob",newData)
+//                                    }
+//                                }
+//                            })
+//                        binding.genderCustomView.setUserDetails(
+//                            gender.toString(),
+//                            "Gender",
+//                            object : SomethingUpdated {
+//                                override fun doUpdate(didUpdate: Boolean, newData: String) {
+//                                    if (didUpdate) {
+//                                        updateUserInfo("gender",newData)
+//                                    }
+//                                }
+//                            })
                     }
                 }
                 .addOnFailureListener {
@@ -164,10 +164,10 @@ class UpdateProfileActivity : AppCompatActivity() {
                                         val dob = docSnapshot.get("dob")
                                         val gender = docSnapshot.get("gender")
                                         binding.tv1.text = name.toString()
-                                        binding.nameCustomView.updateInformation(name.toString(),"Name")
-                                        binding.emailCustomView.updateInformation(email.toString(),"Email")
-                                        binding.dobCustomView.updateInformation(dob.toString(),"DOB")
-                                        binding.genderCustomView.updateInformation(gender.toString(),"Gender")
+//                                        binding.nameCustomView.updateInformation(name.toString(),"Name")
+//                                        binding.emailCustomView.updateInformation(email.toString(),"Email")
+//                                        binding.dobCustomView.updateInformation(dob.toString(),"DOB")
+//                                        binding.genderCustomView.updateInformation(gender.toString(),"Gender")
                                     }
                                 }
                                 .addOnFailureListener { exception ->

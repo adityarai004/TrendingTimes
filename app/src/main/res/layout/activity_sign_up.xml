@@ -206,7 +206,7 @@
                     android:layout_gravity="start|center"
                     android:textStyle="bold" />
 
-                <com.example.trendingtimes.util.CustomUserDetailsView
+                <com.example.trendingtimes.core.util.CustomUserDetailsView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/dob"/>

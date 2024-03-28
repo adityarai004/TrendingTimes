@@ -146,7 +146,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/profile_pic_iv" />
 
 
-                <com.example.trendingtimes.util.CustomUserDetailsView
+                <com.example.trendingtimes.core.util.CustomUserDetailsView
                     android:id="@+id/name_custom_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -154,7 +154,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv1" />
 
-                <com.example.trendingtimes.util.CustomUserDetailsView
+                <com.example.trendingtimes.core.util.CustomUserDetailsView
                     android:id="@+id/email_custom_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -162,7 +162,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/name_custom_view" />
 
-                <com.example.trendingtimes.util.CustomUserDetailsView
+                <com.example.trendingtimes.core.util.CustomUserDetailsView
                     android:id="@+id/dob_custom_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -170,7 +170,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/email_custom_view" />
 
-                <com.example.trendingtimes.util.CustomUserDetailsView
+                <com.example.trendingtimes.core.util.CustomUserDetailsView
                     android:id="@+id/gender_custom_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

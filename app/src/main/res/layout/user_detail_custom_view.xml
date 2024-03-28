@@ -21,7 +21,6 @@
         android:layout_height="25dp"
         android:src="@drawable/ic_edit"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:contentDescription="Edit Icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/userDetailsTextView"
