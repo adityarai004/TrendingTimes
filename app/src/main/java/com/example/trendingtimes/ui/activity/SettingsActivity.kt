@@ -29,7 +29,11 @@ class SettingsActivity : AppCompatActivity() {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val currentNightMode = isDarkModeOn()
+        mAuth = FirebaseAuth.getInstance()
 
+        if(mAuth.currentUser?.isAnonymous == true){
+            binding.logOutBtn.text = "Sign Up"
+        }
         sharePreferences = getSharedPreferences("MODE", Context.MODE_PRIVATE)
         nightMode = sharePreferences.getBoolean("nightMode", currentNightMode)
 
@@ -68,7 +72,11 @@ class SettingsActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
         binding.logOutBtn.setOnClickListener {
             mAuth.signOut()
-            val intent = Intent(this, LoginActivity::class.java)
+            val intent = if(mAuth.currentUser?.isAnonymous == true) {
+                Intent(this, SignUpActivity::class.java)
+            } else {
+                Intent(this, LoginActivity::class.java)
+            }
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
             finish()
