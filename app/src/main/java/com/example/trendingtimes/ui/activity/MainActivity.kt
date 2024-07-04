@@ -56,11 +56,19 @@ class MainActivity : AppCompatActivity() {
                 Scaffold {
                     NavHost(navController = navController, startDestination = currentRoute.value.route(),modifier = Modifier.padding(it)){
                         composable(NavDes.Login.route()){
-                            LoginScreen()
+                            LoginScreen(
+                                onNavigateToRegistration = { /*TODO*/ },
+                                onNavigateToForgotPassword = { /*TODO*/ }) {
+                                
+                            }
                         }
                     }
                 }
-                LoginScreen()
+                LoginScreen(
+                    onNavigateToRegistration = { /*TODO*/ },
+                    onNavigateToForgotPassword = { /*TODO*/ }) {
+                    
+                }
             }
         }
     }

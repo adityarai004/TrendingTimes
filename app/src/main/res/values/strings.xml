@@ -13,6 +13,13 @@
     <string name="confirm_new_password">Confirm new password</string>
     <string name="enter_your_password">Enter Your Password</string>
     <string name="continue_as_a_guest">Continue as a guest</string>
+    <string name="empty_string"> </string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="icon_password_visible">Password Visible</string>
+    <string name="icon_password_hidden">Password Hidden</string>
+    <string name="login_error_msg_empty_email_mobile">Email field cannot be empty</string>
+    <string name="login_error_msg_empty_password">Password Field Cannot Be Empty</string>
     <color name="purple_200">#FFBB86FC</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="Lavender">#8692f7</color>

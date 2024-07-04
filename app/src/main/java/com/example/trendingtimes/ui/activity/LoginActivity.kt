@@ -28,7 +28,11 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Surface {
-                LoginScreen()
+                LoginScreen(
+                    onNavigateToRegistration = { /*TODO*/ },
+                    onNavigateToForgotPassword = { /*TODO*/ }) {
+
+                }
             }
         }
 //        binding = ActivityLoginBinding.inflate(layoutInflater)
