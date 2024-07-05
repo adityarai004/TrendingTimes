@@ -1,5 +1,6 @@
 package com.example.trendingtimes.auth.presentation.ui.login
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.trendingtimes.auth.presentation.ui.login.state.LoginErrorState
@@ -21,6 +22,7 @@ class LoginViewModel : ViewModel() {
     fun onUiEvent(loginUiEvent: LoginUiEvent) {
         when (loginUiEvent) {
             is LoginUiEvent.EmailChanged -> {
+                Log.d("TAG","login ${loginUiEvent.inputValue}")
                 loginState.value = loginState.value.copy(
                     email = loginUiEvent.inputValue,
                     errorState = loginState.value.errorState.copy(
@@ -33,6 +35,7 @@ class LoginViewModel : ViewModel() {
             }
 
             is LoginUiEvent.PasswordChanged -> {
+                Log.d("TAG","login ${loginUiEvent.inputValue}")
                 loginState.value = loginState.value.copy(
                     password = loginUiEvent.inputValue,
                     errorState = loginState.value.errorState.copy(

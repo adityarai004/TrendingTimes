@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">TrendingTimes</string>
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="sign_up">Sign Up</string>
+    <string name="forgot_password">Forgot Password?</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="news_placeholder">This is the news</string>
     <string name="back">back</string>
@@ -11,11 +13,10 @@
     <string name="enter_old_password">Enter old password</string>
     <string name="enter_new_password">Enter new password</string>
     <string name="confirm_new_password">Confirm new password</string>
-    <string name="enter_your_password">Enter Your Password</string>
     <string name="continue_as_a_guest">Continue as a guest</string>
     <string name="empty_string"> </string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
+    <string name="enter_your_email">Enter Your Email</string>
+    <string name="enter_your_password">Enter Your Password</string>
     <string name="icon_password_visible">Password Visible</string>
     <string name="icon_password_hidden">Password Hidden</string>
     <string name="login_error_msg_empty_email_mobile">Email field cannot be empty</string>

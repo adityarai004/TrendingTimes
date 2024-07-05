@@ -10,6 +10,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import com.example.trendingtimes.R
 import com.example.trendingtimes.auth.presentation.ui.common.AuthTextField
+import com.example.trendingtimes.auth.presentation.ui.common.CustomButton
 import com.example.trendingtimes.auth.presentation.ui.common.PasswordTextField
 import com.example.trendingtimes.auth.presentation.ui.login.state.LoginState
 
@@ -23,9 +24,10 @@ fun LoginInputs(
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         AuthTextField(
+            modifier = Modifier.fillMaxWidth(),
             value = loginState.email,
             onValueChange = onEmailChange,
-            label = stringResource(id = R.string.email),
+            label = stringResource(id = R.string.enter_your_email),
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Email
@@ -34,12 +36,14 @@ fun LoginInputs(
             isError = loginState.errorState.passwordErrorState.hasError
         )
         PasswordTextField(
+            modifier = Modifier.fillMaxWidth(),
             value = loginState.password,
             onValueChange = onPasswordChanged,
-            label = stringResource(id = R.string.password),
+            label = stringResource(id = R.string.enter_your_password),
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Done
             )
         )
+        CustomButton(onClick = onSubmit, text = "Login", modifier = Modifier.fillMaxWidth())
     }
 }

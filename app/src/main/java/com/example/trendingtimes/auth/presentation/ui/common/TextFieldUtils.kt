@@ -14,8 +14,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.example.trendingtimes.R
@@ -36,7 +38,7 @@ fun AuthTextField(
         value = value,
         onValueChange = onValueChange,
         label = {
-            Text(text = label)
+            Text(text = label, fontWeight = FontWeight.Black, color = Color.Black)
         },
         maxLines = 1,
         keyboardOptions = keyboardOptions,
@@ -70,7 +72,7 @@ fun PasswordTextField(
         value = value,
         onValueChange = onValueChange,
         label = {
-            Text(text = label)
+            Text(text = label, fontWeight = FontWeight.Black, color = Color.Black)
         },
         trailingIcon = {
             IconButton(onClick = { passwordVisible = !passwordVisible }) {
@@ -93,7 +95,7 @@ fun PasswordTextField(
             }
         },
         maxLines = 1,
-        visualTransformation = if(passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         keyboardOptions = keyboardOptions,
         isError = isError,
         supportingText = {

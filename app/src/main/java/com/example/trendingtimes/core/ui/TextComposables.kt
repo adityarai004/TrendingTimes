@@ -11,13 +11,14 @@ import androidx.compose.ui.text.style.TextAlign
 fun MediumTitleText(
     modifier: Modifier = Modifier,
     text: String,
-    textAlign: TextAlign = TextAlign.Start
+    textAlign: TextAlign = TextAlign.Start,
+    color: Color = Color.Black
 ) {
     Text(
         text = text,
         modifier = modifier,
         style = MaterialTheme.typography.titleMedium,
-        color = Color.Black,
+        color = color,
         textAlign = textAlign
     )
 }
