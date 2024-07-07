@@ -1,5 +1,6 @@
 package com.example.trendingtimes.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -68,7 +69,9 @@ class SearchActivity : AppCompatActivity() {
                     }
 
                     override fun newsClicked(news: News) {
-                        TODO("Not yet implemented")
+                        val readNews = Intent(applicationContext,ReadNewsActivity::class.java)
+                        readNews.putExtra("extra_url",news.url)
+                        startActivity(readNews)
                     }
                 })
                 binding.progressBar.visibility = View.GONE
