@@ -20,7 +20,6 @@ fun LoginInputs(
     onEmailChange: (String) -> Unit,
     onPasswordChanged: (String) -> Unit,
     onSubmit: () -> Unit,
-    onForgotPasswordClick: () -> Unit
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         AuthTextField(

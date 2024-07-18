@@ -9,8 +9,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,8 +25,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.trendingtimes.R
 import com.example.trendingtimes.auth.presentation.ui.login.state.LoginUiEvent
@@ -78,7 +85,6 @@ fun LoginScreen(
                     LoginInputs(
                         loginState = loginState,
                         onEmailChange = { inputString ->
-                            Log.d("TAG","input s $inputString")
                             loginViewModel.onUiEvent(
                                 loginUiEvent = LoginUiEvent.EmailChanged(
                                     inputString
@@ -95,21 +101,26 @@ fun LoginScreen(
                         onSubmit = {
                             loginViewModel.onUiEvent(LoginUiEvent.Submit)
                         },
-                        onForgotPasswordClick = onNavigateToRegistration
                     )
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 5.dp),
+                            .padding(horizontal = 8.dp, vertical = 6.dp),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        MediumTitleText(
-                            text = stringResource(id = R.string.sign_up),
-                            color = Color.White
+                        ClickableText(
+                            onClick = {
+                                onNavigateToRegistration()
+                            },
+                            text = AnnotatedString(stringResource(id = R.string.sign_up)),
+                            style = TextStyle(color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Black)
                         )
-                        MediumTitleText(
-                            text = stringResource(id = R.string.forgot_password),
-                            color = Color.White
+                        ClickableText(
+                            onClick = {
+                                onNavigateToRegistration()
+                            },
+                            text = AnnotatedString(stringResource(id = R.string.forgot_password)),
+                            style = TextStyle(color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Black)
                         )
                     }
                 }
